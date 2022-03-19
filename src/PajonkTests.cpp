@@ -21,7 +21,7 @@ TEST_F(boardTest, whenBoardIsInitializedWith5ItsSizeShouldBe5)
 
 TEST_F(boardTest, whenBoardIsInitializedItShouldContainDots) 
 {
-    EXPECT_EQ(boardSut.at(0,0), '.');
+    EXPECT_EQ(boardSut.at(0,0), SYMBOL::EMPTY);
 }
 
 TEST_F(boardTest, whenBoardHasSize2ReturnCorrectBoard)
@@ -29,6 +29,15 @@ TEST_F(boardTest, whenBoardHasSize2ReturnCorrectBoard)
     Board sut{ 2 };
     std::string field{ "..\n"
                        "..\n" };
+    EXPECT_EQ(sut.getBoard(), field);
+}
+
+TEST_F(boardTest, whenInputtedMarkAt00ItIsStoredCorrectly)
+{
+    Board sut{ 2 };
+    std::string field{ "..\n"
+                       "O.\n" };
+    sut.at(0, 0) = SYMBOL::HEAD;
     EXPECT_EQ(sut.getBoard(), field);
 }
 

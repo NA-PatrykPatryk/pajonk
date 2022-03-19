@@ -2,15 +2,22 @@
 #include <string>
 #include <vector>
 
+enum class SYMBOL
+{
+    EMPTY, HEAD, TAIL, BODY
+};
+
 class Board
 {
 public:
     Board(int = 20);
 public:
-    char at(int, int);
+    SYMBOL& at(int, int);
     int size();
     std::string getBoard();
 private:
     int m_size {};
-    std::vector<std::vector<char>> m_board{ };
+    char returnCharacter(SYMBOL);
+private:
+    std::vector<std::vector<SYMBOL>> m_board{ };
 };

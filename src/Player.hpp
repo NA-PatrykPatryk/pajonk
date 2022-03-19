@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
 
-enum class DIRECTION {
+enum class DIRECTION 
+{
 	UP, DOWN, LEFT, RIGHT
 };
 struct Position

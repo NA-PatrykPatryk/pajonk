@@ -2,10 +2,10 @@
 
 Board::Board(int size) 
     : m_size{size}
-    , m_board(size, std::vector(size, '.'))
+    , m_board(size, std::vector(size, SYMBOL::EMPTY))
     {}
 
-char Board::at(int x, int y)
+SYMBOL& Board::at(int x, int y)
 {
     return m_board.at(x).at(y);
 }
@@ -21,13 +21,28 @@ std::string Board::getBoard()
 
     for (auto vec : m_board)
     {
-        for (auto character : vec)
+        for (auto symbol : vec)
         {
-            board += character;
+            board += returnCharacter(symbol);
         }
 
         board += '\n';
     }
 
     return board;
+}
+
+char Board::returnCharacter(SYMBOL symbol)
+{
+    switch(symbol)
+    {
+        case SYMBOL::EMPTY:
+            return '.';
+        case SYMBOL::HEAD:
+            return 'O';
+        case SYMBOL::TAIL:
+            return 'o';
+        case SYMBOL::BODY:
+            return 'X';
+    }
 }
