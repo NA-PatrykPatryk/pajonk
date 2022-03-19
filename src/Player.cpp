@@ -17,3 +17,12 @@ Position Player::getPosition()
 void Player::moveUp() {
 	++m_position.m_y;
 }
+void Player::moveRight() {
+	++m_position.m_x;
+}
+void Player::moveDown() {
+	--m_position.m_y;
+}
+void Player::moveLeft() {
+	--m_position.m_x;
+}

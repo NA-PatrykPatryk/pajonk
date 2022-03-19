@@ -1,6 +1,9 @@
 #pragma once
 #include <vector>
 
+enum class DIRECTION {
+	UP, DOWN, LEFT, RIGHT
+};
 struct Position
 {
 	// friend bool operator==(const Position& lhs, const Position& rhs)
@@ -23,6 +26,11 @@ public:
 	Player(Position startPosition);
 	Position getPosition();
 	void moveUp();
+
+	void moveRight();
+	void moveDown();
+	void moveLeft();
+
 private:
 	Position m_position;
 };

@@ -41,13 +41,26 @@ TEST(playerTest, WhenInitThenPlayerPositionIsStart)
 	EXPECT_EQ(sut.getPosition(), startPosition);
 }
 
-// TEST(playerTest, WhenMoveUPThenPositionChanges)
-// {
-// 	Position startPosition{0, 0};
-// 	Player sut{startPosition};
+TEST(playerTest, WhenMoveUPThenPositionChanges)
+{
+	Position startPosition{0, 0};
+	Player sut{startPosition};
 
-// 	sut.moveUp();
+	sut.moveUp();
 
-// 	Position endPosition{0, 1};
-// 	EXPECT_EQ(sut.getPosition(), endPosition);
-// }
+	Position endPosition{0, 1};
+	EXPECT_EQ(sut.getPosition(), endPosition);
+}
+
+TEST(playerTest, WhenMoveUPRightDownLeftThenBackToStartPosition)
+{
+	Position startPosition{0, 0};
+	Player sut{startPosition};
+
+	sut.moveUp();
+	sut.moveRight();
+	sut.moveDown();
+	sut.moveLeft();
+
+	EXPECT_EQ(sut.getPosition(), startPosition);
+}
