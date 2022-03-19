@@ -25,12 +25,10 @@ class Player
 public:
 	Player(Position startPosition);
 	Position getPosition();
-	void moveUp();
-
-	void moveRight();
-	void moveDown();
-	void moveLeft();
+	void setDirection(DIRECTION);
+	void move();
 
 private:
 	Position m_position;
+	DIRECTION m_direction;
 };

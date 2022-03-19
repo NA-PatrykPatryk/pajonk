@@ -46,7 +46,8 @@ TEST(playerTest, WhenMoveUPThenPositionChanges)
 	Position startPosition{0, 0};
 	Player sut{startPosition};
 
-	sut.moveUp();
+	sut.setDirection(DIRECTION::UP);
+    sut.move();
 
 	Position endPosition{0, 1};
 	EXPECT_EQ(sut.getPosition(), endPosition);
@@ -57,10 +58,14 @@ TEST(playerTest, WhenMoveUPRightDownLeftThenBackToStartPosition)
 	Position startPosition{0, 0};
 	Player sut{startPosition};
 
-	sut.moveUp();
-	sut.moveRight();
-	sut.moveDown();
-	sut.moveLeft();
+    sut.setDirection(DIRECTION::UP);
+    sut.move();
+    sut.setDirection(DIRECTION::RIGHT);
+    sut.move();
+    sut.setDirection(DIRECTION::DOWN);
+    sut.move();
+    sut.setDirection(DIRECTION::LEFT);
+    sut.move();
 
 	EXPECT_EQ(sut.getPosition(), startPosition);
 }

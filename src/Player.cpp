@@ -14,15 +14,26 @@ Position Player::getPosition()
     return m_position;
 }
 
-void Player::moveUp() {
-	++m_position.m_y;
+void Player::setDirection(DIRECTION direction)
+{
+    m_direction = direction;
 }
-void Player::moveRight() {
-	++m_position.m_x;
-}
-void Player::moveDown() {
-	--m_position.m_y;
-}
-void Player::moveLeft() {
-	--m_position.m_x;
+
+void Player::move()
+{
+    switch(m_direction)
+    {
+        case DIRECTION::UP:
+            ++m_position.m_y;
+            break;
+        case DIRECTION::DOWN:
+            --m_position.m_y;
+            break;
+        case DIRECTION::LEFT:
+            --m_position.m_x;
+            break;
+        case DIRECTION::RIGHT:
+            ++m_position.m_x;
+            break;
+    }
 }
