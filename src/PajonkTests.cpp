@@ -2,21 +2,24 @@
 #include "Board.hpp"
 
 
-
-TEST(boardTest, whenBoardIsInitializedItsSizeShouldBe20) 
+struct boardTest :public ::testing::Test
 {
-    Board sut;
-    EXPECT_EQ(sut.size(), 20);
+    Board boardSut;
+};
+
+
+TEST_F(boardTest, whenBoardIsInitializedItsSizeShouldBe20) 
+{
+    EXPECT_EQ(boardSut.size(), 20);
 }
 
-TEST(boardTest, whenBoardIsInitializedWith5ItsSizeShouldBe5) 
+TEST_F(boardTest, whenBoardIsInitializedWith5ItsSizeShouldBe5) 
 {
     Board sut(5);
     EXPECT_EQ(sut.size(), 5);
 }
 
-TEST(boardTest, whenBoardIsInitializedItShouldContainSpaces) 
+TEST_F(boardTest, whenBoardIsInitializedItShouldContainSpaces) 
 {
-    Board sut;
-    EXPECT_EQ(sut.at(0,0), ' ');
+    EXPECT_EQ(boardSut.at(0,0), ' ');
 }
