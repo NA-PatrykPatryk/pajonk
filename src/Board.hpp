@@ -18,6 +18,7 @@ public:
     SYMBOL& at(int, int);
     int size();
     std::string getBoard();
+	std::string getRow(int rowNumber);
 private:
     int m_size {};
     char returnCharacter(SYMBOL);

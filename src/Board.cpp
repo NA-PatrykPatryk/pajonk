@@ -7,12 +7,20 @@ Board::Board(int size)
 
 SYMBOL& Board::at(int x, int y)
 {
-    return m_board.at(y).at(x);
+    return m_board.at(x).at(y);
 }
 
 int Board::size()
 {
     return m_board.size();
+}
+
+std::string Board::getRow(int rowNumber) {
+	std::string row{};
+	for(int i{0}; i < m_size; ++i) {
+		row += static_cast<char>(m_board[i][rowNumber]);
+	}
+	return row;
 }
 
 std::string Board::getBoard()
@@ -21,11 +29,7 @@ std::string Board::getBoard()
 
     for (int i{ m_size - 1 }; i >= 0; --i)
     {
-        for (int j{ 0 }; j < m_size; ++j)
-        {
-            board += static_cast<char>(m_board[i][j]);
-        }
-        board += '\n';
+        board += getRow(i) + '\n';
     }
 
     return board;
