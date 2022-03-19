@@ -1,6 +1,15 @@
 #include "gtest/gtest.h"
 #include "Board.hpp"
+#include<vector>
 
+using Position = std::vector<int>;
+
+struct Player {
+	Player(Position startPosition) : m_position(startPosition) {}
+	Position getPosition() {return m_position;}
+	private:
+	Position m_position;
+};
 
 struct boardTest :public ::testing::Test
 {
@@ -24,9 +33,9 @@ TEST_F(boardTest, whenBoardIsInitializedItShouldContainDots)
     EXPECT_EQ(boardSut.at(0,0), '.');
 }
 
-TEST_F(playerTest, WhenInitThenPlayerPositionIsStart)
+TEST(playerTest, WhenInitThenPlayerPositionIsStart)
 {
-	std::vector<int> startPosition{0, 0};
+	Position startPosition{0, 0};
 	Player sut{startPosition};
-	EXPECT_EQ(sut.position(), startPosition);
+	EXPECT_EQ(sut.getPosition(), startPosition);
 }
