@@ -41,6 +41,8 @@ TEST_F(boardTest, whenInputtedMarkAt00ItIsStoredCorrectly)
     EXPECT_EQ(sut.getBoard(), field);
 }
 
+
+
 // ----------------------------------------------
 
 TEST(playerTest, WhenInitThenPlayerPositionIsStart)

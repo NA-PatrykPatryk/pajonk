@@ -2,9 +2,12 @@
 #include <string>
 #include <vector>
 
-enum class SYMBOL
+enum class SYMBOL : char
 {
-    EMPTY, HEAD, TAIL, BODY
+    EMPTY = '.',
+    HEAD = 'O',
+    TAIL = 'o',
+    BODY = 'X'
 };
 
 class Board

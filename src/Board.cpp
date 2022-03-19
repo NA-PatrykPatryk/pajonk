@@ -7,7 +7,7 @@ Board::Board(int size)
 
 SYMBOL& Board::at(int x, int y)
 {
-    return m_board.at(x).at(y);
+    return m_board.at(y).at(x);
 }
 
 int Board::size()
@@ -19,30 +19,14 @@ std::string Board::getBoard()
 {
     std::string board{};
 
-    for (auto vec : m_board)
+    for (int i{ m_size - 1 }; i >= 0; --i)
     {
-        for (auto symbol : vec)
+        for (int j{ 0 }; j < m_size; ++j)
         {
-            board += returnCharacter(symbol);
+            board += static_cast<char>(m_board[i][j]);
         }
-
         board += '\n';
     }
 
     return board;
-}
-
-char Board::returnCharacter(SYMBOL symbol)
-{
-    switch(symbol)
-    {
-        case SYMBOL::EMPTY:
-            return '.';
-        case SYMBOL::HEAD:
-            return 'O';
-        case SYMBOL::TAIL:
-            return 'o';
-        case SYMBOL::BODY:
-            return 'X';
-    }
 }
