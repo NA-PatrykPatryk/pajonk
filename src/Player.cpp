@@ -14,3 +14,6 @@ Position Player::getPosition()
     return m_position;
 }
 
+void Player::moveUp() {
+	++m_position.m_y;
+}

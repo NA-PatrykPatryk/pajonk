@@ -22,6 +22,7 @@ class Player
 public:
 	Player(Position startPosition);
 	Position getPosition();
+	void moveUp();
 private:
 	Position m_position;
 };

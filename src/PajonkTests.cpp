@@ -31,10 +31,22 @@ TEST(playerTest, WhenInitThenPlayerPositionIsStart)
 	EXPECT_EQ(sut.getPosition(), startPosition);
 }
 
+#if 0
 TEST(boardTest, printBoard)
 {
     Board sut{ 2 };
     std::string field{ "..\n"
                        "..\n" };
     EXPECT_EQ(sut.print(), field);
+}
+#endif
+TEST(playerTest, WhenMoveUPThenPositionChanges)
+{
+	Position startPosition{0, 0};
+	Player sut{startPosition};
+
+	sut.moveUp();
+
+	Position endPosition{0, 1};
+	EXPECT_EQ(sut.getPosition(), endPosition);
 }
