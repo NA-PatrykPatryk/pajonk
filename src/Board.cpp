@@ -2,7 +2,7 @@
 
 Board::Board(int size) 
     : m_size{size}
-    , m_board(size, std::vector(size, ' '))
+    , m_board(size, std::vector(size, '.'))
     {}
 
 char Board::at(int x, int y)

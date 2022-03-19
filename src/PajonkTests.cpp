@@ -19,7 +19,7 @@ TEST_F(boardTest, whenBoardIsInitializedWith5ItsSizeShouldBe5)
     EXPECT_EQ(sut.size(), 5);
 }
 
-TEST_F(boardTest, whenBoardIsInitializedItShouldContainSpaces) 
+TEST_F(boardTest, whenBoardIsInitializedItShouldContainDots) 
 {
-    EXPECT_EQ(boardSut.at(0,0), ' ');
+    EXPECT_EQ(boardSut.at(0,0), '.');
 }
