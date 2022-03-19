@@ -24,6 +24,16 @@ TEST_F(boardTest, whenBoardIsInitializedItShouldContainDots)
     EXPECT_EQ(boardSut.at(0,0), '.');
 }
 
+TEST_F(boardTest, whenBoardHasSize2ReturnCorrectBoard)
+{
+    Board sut{ 2 };
+    std::string field{ "..\n"
+                       "..\n" };
+    EXPECT_EQ(sut.getBoard(), field);
+}
+
+// ----------------------------------------------
+
 TEST(playerTest, WhenInitThenPlayerPositionIsStart)
 {
 	Position startPosition{0, 0};
@@ -31,22 +41,13 @@ TEST(playerTest, WhenInitThenPlayerPositionIsStart)
 	EXPECT_EQ(sut.getPosition(), startPosition);
 }
 
-#if 0
-TEST(boardTest, printBoard)
-{
-    Board sut{ 2 };
-    std::string field{ "..\n"
-                       "..\n" };
-    EXPECT_EQ(sut.print(), field);
-}
-#endif
-TEST(playerTest, WhenMoveUPThenPositionChanges)
-{
-	Position startPosition{0, 0};
-	Player sut{startPosition};
+// TEST(playerTest, WhenMoveUPThenPositionChanges)
+// {
+// 	Position startPosition{0, 0};
+// 	Player sut{startPosition};
 
-	sut.moveUp();
+// 	sut.moveUp();
 
-	Position endPosition{0, 1};
-	EXPECT_EQ(sut.getPosition(), endPosition);
-}
+// 	Position endPosition{0, 1};
+// 	EXPECT_EQ(sut.getPosition(), endPosition);
+// }

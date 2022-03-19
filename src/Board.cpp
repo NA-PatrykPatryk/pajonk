@@ -14,3 +14,20 @@ int Board::size()
 {
     return m_board.size();
 }
+
+std::string Board::getBoard()
+{
+    std::string board{};
+
+    for (auto vec : m_board)
+    {
+        for (auto character : vec)
+        {
+            board += character;
+        }
+
+        board += '\n';
+    }
+
+    return board;
+}
