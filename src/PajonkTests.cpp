@@ -1,13 +1,16 @@
 #include "gtest/gtest.h"
+#include "Board.hpp"
 
 
 
-TEST(SampleTest, shouldPass) 
+TEST(boardTest, whenBoardIsInitializedItsSizeShouldBe20) 
 {
-    EXPECT_EQ(0, 0);
+    Board sut;
+    EXPECT_EQ(sut.size(), 20);
 }
 
-TEST(SampleTest, shouldNotPass) 
+TEST(boardTest, whenBoardIsInitializedWith5ItsSizeShouldBe5) 
 {
-    EXPECT_EQ(1, 0);
+    Board sut(5);
+    EXPECT_EQ(sut.size(), 5);
 }
