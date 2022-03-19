@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "Board.hpp"
-#include"Player.hpp"
+#include "Player.hpp"
 
 struct boardTest :public ::testing::Test
 {
@@ -29,4 +29,12 @@ TEST(playerTest, WhenInitThenPlayerPositionIsStart)
 	Position startPosition{0, 0};
 	Player sut{startPosition};
 	EXPECT_EQ(sut.getPosition(), startPosition);
+}
+
+TEST(boardTest, printBoard)
+{
+    Board sut{ 2 };
+    std::string field{ "..\n"
+                       "..\n" };
+    EXPECT_EQ(sut.print(), field);
 }

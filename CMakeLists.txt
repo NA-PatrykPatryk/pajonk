@@ -14,7 +14,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 add_executable(main src/Main.cpp)
-add_executable(sample_test src/PajonkTests.cpp src/Board.cpp)
+add_executable(sample_test src/PajonkTests.cpp src/Board.cpp src/Player.cpp)
 
 target_include_directories(main PUBLIC include)
 

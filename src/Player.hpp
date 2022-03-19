@@ -1,14 +1,27 @@
 #pragma once
+#include <vector>
 
-#include<vector>
+struct Position
+{
+	// friend bool operator==(const Position& lhs, const Position& rhs)
+	// {
+	// 	return lhs.m_x == rhs.m_x && lhs.m_y == rhs.m_y;
+	// }
 
-using Position = std::vector<int>;
+	bool operator==(const Position& rhs) const
+	{
+		return m_x == rhs.m_x && m_y == rhs.m_y;
+	}
 
-struct Player {
-	Player(Position startPosition) : m_position(startPosition) {}
-	Position getPosition() {return m_position;}
-	private:
-	Position m_position;
+	int m_x{};
+	int m_y{};
 };
 
-
+class Player
+{
+public:
+	Player(Position startPosition);
+	Position getPosition();
+private:
+	Position m_position;
+};

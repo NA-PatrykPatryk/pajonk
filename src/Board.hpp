@@ -9,7 +9,8 @@ public:
 public:
     char at(int, int);
     int size();
+    std::string print();
 private:
     int m_size {};
-    std::vector<std::vector<char>> m_board {};
+    std::vector<std::vector<char>> m_board{ };
 };
