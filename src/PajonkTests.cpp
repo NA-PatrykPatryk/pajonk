@@ -23,3 +23,10 @@ TEST_F(boardTest, whenBoardIsInitializedItShouldContainDots)
 {
     EXPECT_EQ(boardSut.at(0,0), '.');
 }
+
+TEST_F(playerTest, WhenInitThenPlayerPositionIsStart)
+{
+	std::vector<int> startPosition{0, 0};
+	Player sut{startPosition};
+	EXPECT_EQ(sut.position(), startPosition);
+}
