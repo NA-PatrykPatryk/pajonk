@@ -20,7 +20,9 @@ public:
     std::string getBoard();
     void fill(int, int);
     int size();
+    bool isSurrounded(int, int);
 private:
+    bool inRange(int, int);
     int m_size {};
     char returnCharacter(SYMBOL);
 	std::string getRow(int rowNumber);

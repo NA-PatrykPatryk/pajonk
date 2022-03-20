@@ -113,6 +113,35 @@ TEST_F(boardTest, whenFillIsCalledItFillsEmptyTilesSurroundedByBody)
     EXPECT_EQ(sut.getBoard(), field2);
 }
 
+TEST_F(boardTest, whenFieldIsSourroundedByBodyElementsReturnTrue)
+{
+    Board sut{ 3 };
+    sut.at(0, 0) = SYMBOL::BODY;
+    sut.at(0, 1) = SYMBOL::BODY;
+    sut.at(0, 2) = SYMBOL::BODY;
+    sut.at(1, 0) = SYMBOL::BODY;
+    sut.at(1, 2) = SYMBOL::BODY;
+    sut.at(2, 0) = SYMBOL::BODY;
+    sut.at(2, 1) = SYMBOL::BODY;
+    sut.at(2, 2) = SYMBOL::BODY;
+
+    EXPECT_TRUE(sut.isSurrounded(1, 1));
+}
+
+TEST_F(boardTest, whenFieldIsNotSourroundedByBodyElementsReturnFalse)
+{
+    Board sut{ 3 };
+    sut.at(0, 0) = SYMBOL::BODY;
+    sut.at(0, 1) = SYMBOL::BODY;
+    sut.at(0, 2) = SYMBOL::BODY;
+    sut.at(1, 0) = SYMBOL::BODY;
+    sut.at(1, 2) = SYMBOL::BODY;
+    sut.at(2, 1) = SYMBOL::BODY;
+    sut.at(2, 2) = SYMBOL::BODY;
+
+    EXPECT_FALSE(sut.isSurrounded(1, 1));
+}
+
 // ----------------------------------------------
 
 TEST(playerTest, WhenInitThenPlayerPositionIsStart)
