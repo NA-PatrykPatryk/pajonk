@@ -18,6 +18,7 @@ public:
     SYMBOL& at(int, int);
     void makePermanent();
     std::string getBoard();
+    void fill(int, int);
     int size();
 private:
     int m_size {};

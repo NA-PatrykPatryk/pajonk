@@ -33,6 +33,18 @@ std::string Board::getBoard()
     return board;
 }
 
+void Board::fill(int x, int y)
+{
+    if(at(x, y) != SYMBOL::BODY)
+    {
+        at(x, y) = SYMBOL::BODY;
+        fill(x - 1, y);
+        fill(x + 1, y);
+        fill(x, y - 1);
+        fill(x, y + 1);
+    }
+}
+
 int Board::size()
 {
     return m_board.size();

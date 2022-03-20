@@ -63,6 +63,56 @@ TEST_F(boardTest, whenRequestedTurnsTailIntoBodyIn3By3Board)
     EXPECT_EQ(sut.getBoard(), field);
 }
 
+TEST_F(boardTest, whenFillIsCalledItFillsEmptyTileSurroundedByBody)
+{
+    Board sut{ 3 };
+    sut.at(0, 0) = SYMBOL::BODY;
+    sut.at(0, 1) = SYMBOL::BODY;
+    sut.at(0, 2) = SYMBOL::BODY;
+    sut.at(1, 0) = SYMBOL::BODY;
+    sut.at(1, 2) = SYMBOL::BODY;
+    sut.at(2, 0) = SYMBOL::BODY;
+    sut.at(2, 1) = SYMBOL::BODY;
+    sut.at(2, 2) = SYMBOL::BODY;
+    sut.fill(1, 1);
+    std::string field{ "XXX\n"
+                       "XXX\n"
+                       "XXX\n" };
+    EXPECT_EQ(sut.getBoard(), field);
+}
+
+TEST_F(boardTest, whenFillIsCalledItFillsEmptyTilesSurroundedByBody)
+{
+    Board sut{ 5 };
+    sut.at(0, 0) = SYMBOL::BODY;
+    sut.at(1, 0) = SYMBOL::BODY;
+    sut.at(2, 0) = SYMBOL::BODY;
+    sut.at(3, 0) = SYMBOL::BODY;
+    sut.at(4, 0) = SYMBOL::BODY;
+    sut.at(0, 1) = SYMBOL::BODY;
+    sut.at(4, 1) = SYMBOL::BODY;
+    sut.at(0, 2) = SYMBOL::BODY;
+    sut.at(4, 2) = SYMBOL::BODY;
+    sut.at(0, 3) = SYMBOL::BODY;
+    sut.at(1, 3) = SYMBOL::BODY;
+    sut.at(2, 3) = SYMBOL::BODY;
+    sut.at(3, 3) = SYMBOL::BODY;
+    sut.at(4, 3) = SYMBOL::BODY;
+    std::string field1{ ".....\n"
+                        "XXXXX\n"
+                        "X...X\n"
+                        "X...X\n"
+                        "XXXXX\n" };
+    EXPECT_EQ(sut.getBoard(), field1);
+    sut.fill(1, 1);
+    std::string field2{ ".....\n"
+                        "XXXXX\n"
+                        "XXXXX\n"
+                        "XXXXX\n"
+                        "XXXXX\n" };
+    EXPECT_EQ(sut.getBoard(), field2);
+}
+
 // ----------------------------------------------
 
 TEST(playerTest, WhenInitThenPlayerPositionIsStart)
