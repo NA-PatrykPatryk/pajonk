@@ -10,17 +10,15 @@ SYMBOL& Board::at(int x, int y)
     return m_board.at(x).at(y);
 }
 
-int Board::size()
+void Board::makePermanent()
 {
-    return m_board.size();
-}
-
-std::string Board::getRow(int rowNumber) {
-	std::string row{};
-	for(int i{0}; i < m_size; ++i) {
-		row += static_cast<char>(m_board[i][rowNumber]);
-	}
-	return row;
+    for(auto& vec : m_board)
+    {
+        for(auto& symbol: vec)
+        {
+            if(symbol == SYMBOL::TAIL) symbol = SYMBOL::BODY;
+        }
+    }
 }
 
 std::string Board::getBoard()
@@ -33,4 +31,17 @@ std::string Board::getBoard()
     }
 
     return board;
+}
+
+int Board::size()
+{
+    return m_board.size();
+}
+
+std::string Board::getRow(int rowNumber) {
+	std::string row{};
+	for(int i{0}; i < m_size; ++i) {
+		row += static_cast<char>(at(i, rowNumber));
+	}
+	return row;
 }

@@ -16,12 +16,13 @@ public:
     Board(int = 20);
 public:
     SYMBOL& at(int, int);
-    int size();
+    void makePermanent();
     std::string getBoard();
-	std::string getRow(int rowNumber);
+    int size();
 private:
     int m_size {};
     char returnCharacter(SYMBOL);
+	std::string getRow(int rowNumber);
 private:
     std::vector<std::vector<SYMBOL>> m_board{ };
 };

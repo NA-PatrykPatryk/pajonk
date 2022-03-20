@@ -41,7 +41,27 @@ TEST_F(boardTest, whenInputtedMarkAt00ItIsStoredCorrectly)
     EXPECT_EQ(sut.getBoard(), field);
 }
 
+TEST_F(boardTest, whenRequestedTurnsTailIntoBodyIn1By1Board)
+{
+    Board sut{ 1 };
+    sut.at(0, 0) = SYMBOL::TAIL;
+    sut.makePermanent();
+    EXPECT_EQ(sut.at(0, 0), SYMBOL::BODY);
+}
 
+TEST_F(boardTest, whenRequestedTurnsTailIntoBodyIn3By3Board)
+{
+    Board sut{ 3 };
+    sut.at(0, 0) = SYMBOL::TAIL;
+    sut.at(1, 0) = SYMBOL::TAIL;
+    sut.at(2, 0) = SYMBOL::TAIL;
+    sut.at(2, 1) = SYMBOL::TAIL;
+    sut.makePermanent();
+    std::string field{ "...\n"
+                       "..X\n"
+                       "XXX\n" };
+    EXPECT_EQ(sut.getBoard(), field);
+}
 
 // ----------------------------------------------
 
