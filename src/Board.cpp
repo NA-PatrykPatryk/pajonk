@@ -57,17 +57,27 @@ int Board::size()
 
 bool Board::isSurrounded(int x, int y)
 {
-    if (not inRange(x, y))
-        return false;
-    if (at(x, y) != SYMBOL::BODY)
-        return true;
-    
-    bool left = isSurrounded(x - 1, y);
-    bool right = isSurrounded(x + 1, y);
-    bool down = isSurrounded(x, y - 1);
-    bool up = isSurrounded(x, y + 1);
+    std::vector<std::vector<SYMBOL>> board = m_board;
 
-    return left and right and down and up;
+    return isSurrounded(x, y, board);
+}
+
+bool Board::isSurrounded(int x, int y, std::vector<std::vector<SYMBOL>>& boardC)
+{
+    if (not inRange(x, y)) return false;
+    if (boardC.at(x).at(y) == SYMBOL::CHECKED) return true;
+
+    if (boardC.at(x).at(y) != SYMBOL::BODY )
+    {
+        boardC.at(x).at(y) = SYMBOL::CHECKED;
+        bool left = isSurrounded(x - 1, y, boardC);
+        bool right = isSurrounded(x + 1, y, boardC);
+        bool down = isSurrounded(x, y - 1, boardC);
+        bool up = isSurrounded(x, y + 1, boardC);
+
+        return left && right && down && up;
+    }
+    return true;
 }
 
 std::string Board::getRow(int rowNumber) {

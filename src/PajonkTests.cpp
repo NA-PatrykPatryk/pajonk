@@ -130,16 +130,30 @@ TEST_F(boardTest, whenFieldIsSourroundedByBodyElementsReturnTrue)
 
 TEST_F(boardTest, whenFieldIsNotSourroundedByBodyElementsReturnFalse)
 {
-    Board sut{ 3 };
+    Board sut{ 5 };
     sut.at(0, 0) = SYMBOL::BODY;
-    sut.at(0, 1) = SYMBOL::BODY;
-    sut.at(0, 2) = SYMBOL::BODY;
     sut.at(1, 0) = SYMBOL::BODY;
-    sut.at(1, 2) = SYMBOL::BODY;
-    sut.at(2, 1) = SYMBOL::BODY;
-    sut.at(2, 2) = SYMBOL::BODY;
+    sut.at(2, 0) = SYMBOL::BODY;
+    sut.at(3, 0) = SYMBOL::BODY;
+    sut.at(4, 0) = SYMBOL::BODY;
+    sut.at(0, 1) = SYMBOL::BODY;
+    sut.at(4, 1) = SYMBOL::BODY;
+    sut.at(0, 2) = SYMBOL::BODY;
+    sut.at(4, 2) = SYMBOL::BODY;
+    sut.at(0, 3) = SYMBOL::BODY;
+    sut.at(1, 3) = SYMBOL::BODY;
+    sut.at(2, 3) = SYMBOL::BODY;
+    sut.at(3, 3) = SYMBOL::BODY;
+    sut.at(4, 3) = SYMBOL::BODY;
 
-    EXPECT_FALSE(sut.isSurrounded(1, 1));
+    std::string field1{ ".....\n"
+                        "XXXXX\n"
+                        "X...X\n"
+                        "X...X\n"
+                        "XXXXX\n" };
+    EXPECT_EQ(sut.getBoard(), field1);
+
+    EXPECT_FALSE(sut.isSurrounded(1, 4));
 }
 
 // ----------------------------------------------

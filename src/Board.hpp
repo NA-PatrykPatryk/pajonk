@@ -7,7 +7,8 @@ enum class SYMBOL : char
     EMPTY = '.',
     HEAD = 'O',
     TAIL = 'o',
-    BODY = 'X'
+    BODY = 'X',
+    CHECKED = 'C'
 };
 
 class Board
@@ -22,6 +23,7 @@ public:
     int size();
     bool isSurrounded(int, int);
 private:
+    bool isSurrounded(int, int, std::vector<std::vector<SYMBOL>>&);
     bool inRange(int, int);
     int m_size {};
     char returnCharacter(SYMBOL);
