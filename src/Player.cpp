@@ -20,6 +20,16 @@ void Player::setDirection(DIRECTION direction)
     m_direction = direction;
 }
 
+void Player::setDirectionBasedOnChange(char change)
+{
+	switch(change) {
+		case 'R' : setDirection(DIRECTION::RIGHT); return;
+		case 'D' : setDirection(DIRECTION::DOWN); return;
+		case 'L' : setDirection(DIRECTION::LEFT); return;
+		case 'U' : setDirection(DIRECTION::UP); return;
+	}
+}
+
 void Player::move()
 {
     switch(m_direction)

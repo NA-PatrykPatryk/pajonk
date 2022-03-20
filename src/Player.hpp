@@ -20,6 +20,7 @@ public:
 	Player(Position startPosition);
 	Position getPosition();
 	void setDirection(DIRECTION);
+	void setDirectionBasedOnChange(char change);
 	void move();
 
 private:

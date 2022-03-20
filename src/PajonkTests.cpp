@@ -1,12 +1,36 @@
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 #include "Board.hpp"
 #include "Player.hpp"
+
+struct InputInterface {
+	virtual char directionChange() = 0;
+};
+
+struct InputMock : InputInterface {
+	MOCK_METHOD(char, directionChange, (), (override));
+};
+
+struct Tail {
+	void addPosition(Position position);
+	bool isCycle() {
+		size_t maxSteps{m_positions.size() - 1};
+		size_t steps = maxSteps;
+		for(size_t i{0}; i < maxSteps; ++i) {
+			if(m_positions.at(i) == m_positions.back()) {
+				steps = i;
+				break;
+			}
+		}
+		return steps < maxSteps;
+	}
+	std::vector<Position> m_positions{};
+};
 
 struct boardTest :public ::testing::Test
 {
     Board boardSut;
 };
-
 
 TEST_F(boardTest, whenBoardIsInitializedItsSizeShouldBe20) 
 {
@@ -220,4 +244,118 @@ TEST(playerTest, WhenMoveUPRightDownLeftThenBackToStartPosition)
     sut.move();
 
 	EXPECT_EQ(sut.getPosition(), startPosition);
+}
+
+TEST(playerTest, WhenPlayerInputDoesNotChangeDirectionThenDirectionDoesNotChange)
+{
+	Position startPosition{0, 0};
+	Player sut{startPosition};
+    sut.setDirection(DIRECTION::UP);
+
+	char doNotChangeDirection = 0;
+	InputMock input;
+	EXPECT_CALL(input, directionChange())
+		.WillOnce(testing::Return(doNotChangeDirection))
+		.WillOnce(testing::Return(doNotChangeDirection));
+
+	input.directionChange();
+	sut.move();
+
+    sut.setDirection(DIRECTION::RIGHT);
+	input.directionChange();
+	sut.move();
+
+	Position endPositionExpected{1, 1};
+	EXPECT_EQ(sut.getPosition(), endPositionExpected);
+}
+
+TEST(playerTest, WhenPlayerInputDoesChangeDirectionToRightWhenDirectionIsUpThenDirectionIsRight)
+{
+	Position startPosition{0, 0};
+	Player sut{startPosition};
+    sut.setDirection(DIRECTION::UP);
+
+	InputMock input;
+	char doChangeDirectionToRight = 'R';
+	EXPECT_CALL(input, directionChange())
+		.WillOnce(testing::Return(doChangeDirectionToRight));
+
+	sut.move();
+
+	sut.setDirectionBasedOnChange(input.directionChange());
+	sut.move();
+
+	Position endPositionExpected{1, 1};
+	EXPECT_EQ(sut.getPosition(), endPositionExpected);
+}
+
+TEST(playerTest, RecognizeCycle) {
+	Tail sut;
+	sut.m_positions.push_back({0, 0});
+	sut.m_positions.push_back({0, 1});
+	sut.m_positions.push_back({0, 2});
+	sut.m_positions.push_back({0, 3});
+	sut.m_positions.push_back({1, 3});
+	sut.m_positions.push_back({2, 3});
+	sut.m_positions.push_back({2, 2});
+	sut.m_positions.push_back({2, 1});
+	sut.m_positions.push_back({1, 1});
+	sut.m_positions.push_back({0, 1});
+
+	EXPECT_TRUE(sut.isCycle());
+}
+
+TEST(playerTest, WhenThereIsNoCycleThenTailIsCycleReturnsFalse) {
+	Tail sut;
+	sut.m_positions.push_back({0, 0});
+	sut.m_positions.push_back({0, 1});
+	sut.m_positions.push_back({0, 2});
+	sut.m_positions.push_back({0, 3});
+	sut.m_positions.push_back({1, 3});
+	sut.m_positions.push_back({2, 3});
+	sut.m_positions.push_back({2, 2});
+	sut.m_positions.push_back({2, 1});
+	sut.m_positions.push_back({1, 1});
+
+	EXPECT_FALSE(sut.isCycle());
+}
+
+TEST(playerTest, WhenPlayerMeetsHisTailThenHeDies)
+{
+	Position startPosition{0, 0};
+	Player sut{startPosition};
+	sut.setDirection(DIRECTION::UP);
+
+	Tail tail;
+	tail.m_positions.push_back(startPosition);
+
+	char doNotChangeDirection = 0;
+	char doChangeDirectionToRight = 'R';
+	char doChangeDirectionToDown = 'D';
+	char doChangeDirectionToLeft = 'L';
+	InputMock input;
+	EXPECT_CALL(input, directionChange())
+		.WillOnce(testing::Return(doNotChangeDirection))
+		.WillOnce(testing::Return(doNotChangeDirection))
+		.WillOnce(testing::Return(doNotChangeDirection))
+		.WillOnce(testing::Return(doNotChangeDirection))
+			.WillOnce(testing::Return(doChangeDirectionToRight))
+		.WillOnce(testing::Return(doNotChangeDirection))
+			.WillOnce(testing::Return(doChangeDirectionToDown))
+		.WillOnce(testing::Return(doNotChangeDirection))
+			.WillOnce(testing::Return(doChangeDirectionToLeft))
+		.WillOnce(testing::Return(doNotChangeDirection));
+
+
+	for(size_t i{0}; i < 9; ++i) {
+		sut.setDirectionBasedOnChange(input.directionChange());
+		sut.move();
+		tail.m_positions.push_back(sut.getPosition());
+		EXPECT_FALSE(tail.isCycle());
+	}
+
+	sut.setDirectionBasedOnChange(input.directionChange());
+	sut.move();
+	tail.m_positions.push_back(sut.getPosition());
+	EXPECT_TRUE(tail.isCycle());
 }
