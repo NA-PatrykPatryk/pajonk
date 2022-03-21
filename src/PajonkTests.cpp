@@ -3,6 +3,8 @@
 #include "Board.hpp"
 #include "Player.hpp"
 
+#define DISPLAY 1
+
 struct InputInterface {
 	virtual char directionChange() = 0;
 };
@@ -25,6 +27,41 @@ struct Tail {
 		return steps < maxSteps;
 	}
 	std::vector<Position> m_positions{};
+};
+
+struct Display {
+	static constexpr size_t m_size = 6;
+	static constexpr size_t m_allSize = m_size * m_size;
+	static constexpr size_t m_allSizePlus = m_allSize + 1;
+	Display() {clear();}
+	void clear() {memset(m_pxl, '.', m_allSize); m_pxl[m_allSize] = 0;}
+	void mark(Position element){
+		m_pxl[element.m_y * m_size + element.m_x] = 'X';
+	}
+#ifdef DISPLAY
+	void drawCurrent() {
+		char frame[m_size + 3];
+		memset(frame, '_', m_size + 2); frame[m_size + 2] = 0;
+		std::cout << frame << std::endl;
+
+		char tmp = m_pxl[m_allSize];
+		m_pxl[m_allSize] = 0;
+		for(size_t i{0}, rowStart{m_allSize - m_size}; i < m_size; ++i, rowStart -= m_size) {
+			std::cout << '|' << &(m_pxl[rowStart]) << '|' << std::endl;
+			m_pxl[rowStart + m_size] = tmp;
+			tmp = m_pxl[rowStart];
+			m_pxl[rowStart] = 0;
+		}
+		m_pxl[0] = tmp;
+
+		memset(frame, '-', m_size + 2); frame[m_size + 2] = 0;
+		std::cout << frame << std::endl;
+	};
+#else
+	void drawCurrent() {}
+#endif
+	void mark(Tail) {}
+	char m_pxl[m_allSizePlus];
 };
 
 struct boardTest :public ::testing::Test
@@ -322,12 +359,15 @@ TEST(playerTest, WhenThereIsNoCycleThenTailIsCycleReturnsFalse) {
 
 TEST(playerTest, WhenPlayerMeetsHisTailThenHeDies)
 {
+	Display dspl;
+
 	Position startPosition{0, 0};
 	Player sut{startPosition};
 	sut.setDirection(DIRECTION::UP);
 
 	Tail tail;
 	tail.m_positions.push_back(startPosition);
+	dspl.mark(sut.getPosition()); dspl.drawCurrent();
 
 	char doNotChangeDirection = 0;
 	char doChangeDirectionToRight = 'R';
@@ -351,11 +391,13 @@ TEST(playerTest, WhenPlayerMeetsHisTailThenHeDies)
 		sut.setDirectionBasedOnChange(input.directionChange());
 		sut.move();
 		tail.m_positions.push_back(sut.getPosition());
+		dspl.mark(sut.getPosition()); dspl.drawCurrent();
 		EXPECT_FALSE(tail.isCycle());
 	}
 
 	sut.setDirectionBasedOnChange(input.directionChange());
 	sut.move();
 	tail.m_positions.push_back(sut.getPosition());
+	dspl.mark(sut.getPosition()); dspl.drawCurrent();
 	EXPECT_TRUE(tail.isCycle());
 }
