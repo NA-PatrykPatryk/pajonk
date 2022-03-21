@@ -17,6 +17,26 @@ Position Player::getPosition()
 
 void Player::setDirection(DIRECTION direction)
 {
+	if(m_direction == direction)
+		return;
+	switch(m_direction) {
+		case DIRECTION::UP :
+			if(direction == DIRECTION::RIGHT) ++m_turnRightCounter;
+			if(direction == DIRECTION::LEFT) --m_turnRightCounter;
+			break;
+
+		case DIRECTION::RIGHT :
+			if(direction == DIRECTION::DOWN) ++m_turnRightCounter;
+			if(direction == DIRECTION::UP) --m_turnRightCounter;
+			break;
+		case DIRECTION::DOWN :
+			if(direction == DIRECTION::LEFT) ++m_turnRightCounter;
+			if(direction == DIRECTION::RIGHT) --m_turnRightCounter;
+			break;
+		case DIRECTION::LEFT :
+			if(direction == DIRECTION::UP) ++m_turnRightCounter;
+			if(direction == DIRECTION::DOWN) --m_turnRightCounter;
+	};
     m_direction = direction;
 }
 

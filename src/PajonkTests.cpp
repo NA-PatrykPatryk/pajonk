@@ -16,7 +16,10 @@ struct InputMock : InputInterface {
 struct Tail {
 	void addPosition(Position position);
 	bool isCycle() {
+		if(m_positions.size() < 5)
+			return false;
 		size_t maxSteps{m_positions.size() - 1};
+		if(maxSteps < 4) return false;
 		size_t steps = maxSteps;
 		for(size_t i{0}; i < maxSteps; ++i) {
 			if(m_positions.at(i) == m_positions.back()) {
@@ -401,3 +404,43 @@ TEST(playerTest, WhenPlayerMeetsHisTailThenHeDies)
 	dspl.mark(sut.getPosition()); dspl.drawCurrent();
 	EXPECT_TRUE(tail.isCycle());
 }
+
+TEST(playerTest, WhenPlayerTurnedRightMoreThanLeftThanInsideIsOnTheRightSide) {
+	Display dspl;
+
+	Position startPosition{0, 0};
+	Player sut{startPosition};
+	sut.setDirection(DIRECTION::UP);
+
+	Tail tail;
+	tail.m_positions.push_back(startPosition);
+	dspl.mark(sut.getPosition()); dspl.drawCurrent();
+
+	char doNotChangeDirection = 0;
+	char doChangeDirectionToRight = 'R';
+	char doChangeDirectionToDown = 'D';
+	char doChangeDirectionToLeft = 'L';
+	InputMock input;
+	EXPECT_CALL(input, directionChange())
+		.WillOnce(testing::Return(doNotChangeDirection))
+		.WillOnce(testing::Return(doNotChangeDirection))
+		.WillOnce(testing::Return(doNotChangeDirection))
+		.WillOnce(testing::Return(doNotChangeDirection))
+			.WillOnce(testing::Return(doChangeDirectionToRight))
+		.WillOnce(testing::Return(doNotChangeDirection))
+			.WillOnce(testing::Return(doChangeDirectionToDown))
+		.WillOnce(testing::Return(doNotChangeDirection))
+			.WillOnce(testing::Return(doChangeDirectionToLeft))
+		.WillOnce(testing::Return(doNotChangeDirection));
+
+
+	while(not tail.isCycle()) {
+		sut.setDirectionBasedOnChange(input.directionChange());
+		sut.move();
+		tail.m_positions.push_back(sut.getPosition());
+		dspl.mark(sut.getPosition()); dspl.drawCurrent();
+	}
+	EXPECT_TRUE((sut.m_turnRightCounter > 0));
+}
+
+
