@@ -2,6 +2,7 @@
 #include "gmock/gmock.h"
 #include "Board.hpp"
 #include "Player.hpp"
+#include<stdio.h>
 
 #define DISPLAY 1
 
@@ -11,6 +12,23 @@ struct InputInterface {
 
 struct InputMock : InputInterface {
 	MOCK_METHOD(char, directionChange, (), (override));
+};
+
+struct InputFile {
+	char direction;
+	FILE* m_f{nullptr};
+	virtual char directionChange() {
+		m_f = fopen("input.txt", "r");
+		if(not m_f) return 0;
+		fscanf(m_f, "%c", &direction);
+		fclose(m_f);
+		m_f = nullptr;
+
+		m_f = fopen("input.txt", "w");
+		if(not m_f) return direction;
+		fclose(m_f);
+		return direction;
+	}
 };
 
 struct Tail {
@@ -33,7 +51,7 @@ struct Tail {
 };
 
 struct Display {
-	static constexpr size_t m_size = 6;
+	static constexpr size_t m_size = 25;
 	static constexpr size_t m_allSize = m_size * m_size;
 	static constexpr size_t m_allSizePlus = m_allSize + 1;
 	Display() {clear();}
@@ -443,6 +461,32 @@ TEST(playerTest, WhenPlayerTurnedRightMoreThanLeftAndEndedAtBeginThenInsideIsOnT
 		sut.move();
 		tail.m_positions.push_back(sut.getPosition());
 		dspl.mark(sut.getPosition()); dspl.drawCurrent();
+	}
+
+	EXPECT_EQ(sut.getPosition(), startPosition); // inside is on the right of a tail
+	EXPECT_TRUE((sut.m_turnRightCounter > 0)); // inside is on the right of a tail
+}
+
+TEST(playerTest, GetInputFromAFile) {
+	Display dspl;
+
+	Position startPosition{0, 0};
+	Player sut{startPosition};
+	sut.setDirection(DIRECTION::UP);
+
+	Tail tail;
+	tail.m_positions.push_back(startPosition);
+	dspl.mark(sut.getPosition()); dspl.drawCurrent();
+
+	InputFile input;
+	// if more calls then return do not change direction - use ON_CALL??
+
+	while(not tail.isCycle()) {
+		sut.setDirectionBasedOnChange(input.directionChange());
+		sut.move();
+		tail.m_positions.push_back(sut.getPosition());
+		dspl.mark(sut.getPosition()); dspl.drawCurrent();
+		sleep(1);
 	}
 
 	EXPECT_EQ(sut.getPosition(), startPosition); // inside is on the right of a tail
