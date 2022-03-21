@@ -23,7 +23,7 @@ public:
 	void setDirectionBasedOnChange(char change);
 	void move();
 
-	int m_turnRightCounter;
+	int m_turnRightCounter{0};
 
 private:
 	Position m_position;

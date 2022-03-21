@@ -405,7 +405,7 @@ TEST(playerTest, WhenPlayerMeetsHisTailThenHeDies)
 	EXPECT_TRUE(tail.isCycle());
 }
 
-TEST(playerTest, WhenPlayerTurnedRightMoreThanLeftThanInsideIsOnTheRightSide) {
+TEST(playerTest, WhenPlayerTurnedRightMoreThanLeftAndEndedAtBeginThenInsideIsOnTheRightSideOfTail) {
 	Display dspl;
 
 	Position startPosition{0, 0};
@@ -428,11 +428,15 @@ TEST(playerTest, WhenPlayerTurnedRightMoreThanLeftThanInsideIsOnTheRightSide) {
 		.WillOnce(testing::Return(doNotChangeDirection))
 			.WillOnce(testing::Return(doChangeDirectionToRight))
 		.WillOnce(testing::Return(doNotChangeDirection))
+		.WillOnce(testing::Return(doNotChangeDirection))
 			.WillOnce(testing::Return(doChangeDirectionToDown))
 		.WillOnce(testing::Return(doNotChangeDirection))
+		.WillOnce(testing::Return(doNotChangeDirection))
+		.WillOnce(testing::Return(doNotChangeDirection))
 			.WillOnce(testing::Return(doChangeDirectionToLeft))
+		.WillOnce(testing::Return(doNotChangeDirection))
 		.WillOnce(testing::Return(doNotChangeDirection));
-
+	// if more calls then return do not change direction - use ON_CALL??
 
 	while(not tail.isCycle()) {
 		sut.setDirectionBasedOnChange(input.directionChange());
@@ -440,7 +444,7 @@ TEST(playerTest, WhenPlayerTurnedRightMoreThanLeftThanInsideIsOnTheRightSide) {
 		tail.m_positions.push_back(sut.getPosition());
 		dspl.mark(sut.getPosition()); dspl.drawCurrent();
 	}
-	EXPECT_TRUE((sut.m_turnRightCounter > 0));
+
+	EXPECT_EQ(sut.getPosition(), startPosition); // inside is on the right of a tail
+	EXPECT_TRUE((sut.m_turnRightCounter > 0)); // inside is on the right of a tail
 }
-
-
