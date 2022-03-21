@@ -1,9 +1,8 @@
 #include "Board.hpp"
 
 Board::Board(int size)
-    : m_size{ size }
-    , m_board(size, std::vector(size, SYMBOL::EMPTY))
-{}
+    : m_board(size, std::vector(size, SYMBOL::EMPTY))
+    {}
 
 bool Board::inRange(int x, int y)
 {
@@ -30,7 +29,7 @@ std::string Board::getBoard()
 {
     std::string board{};
 
-    for (int i{ m_size - 1 }; i >= 0; --i)
+    for (int i{ size() - 1 }; i >= 0; --i)
     {
         board += getRow(i) + '\n';
     }
@@ -80,9 +79,10 @@ bool Board::isSurrounded(int x, int y, std::vector<std::vector<SYMBOL>>& boardC)
     return true;
 }
 
-std::string Board::getRow(int rowNumber) {
+std::string Board::getRow(int rowNumber) 
+{
     std::string row{};
-    for (int i{ 0 }; i < m_size; ++i) {
+    for (int i{ 0 }; i < size(); ++i) {
         row += static_cast<char>(at(i, rowNumber));
     }
     return row;

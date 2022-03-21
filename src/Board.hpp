@@ -25,7 +25,6 @@ public:
 private:
     bool isSurrounded(int, int, std::vector<std::vector<SYMBOL>>&);
     bool inRange(int, int);
-    int m_size {};
     char returnCharacter(SYMBOL);
 	std::string getRow(int rowNumber);
 private:
