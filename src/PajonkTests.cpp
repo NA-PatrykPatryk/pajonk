@@ -219,6 +219,30 @@ TEST_F(boardTest, whenFillIsCalledItWillDetectAndFillAllEnclosedSpaces)
     EXPECT_EQ(sut.getBoard(), field2);
 }
 
+TEST_F(boardTest, whenUsingFillItMakesTailPermamentAndFillsAllSurroundedBlocks)
+{
+    Board sut(".....\n"
+              ".XXX.\n"
+              "X...o\n"
+              "X...o\n"
+              ".XXX.\n");
+
+    std::cout << "test" << std::endl;
+    std::cout << sut.getBoard() << std::endl;
+
+    sut.fill();
+
+    std::cout << sut.getBoard() << std::endl;
+    std::cout << "test" << std::endl;
+
+    std::string field2{ ".....\n"
+                        ".XXX.\n"
+                        "XXXXX\n"
+                        "XXXXX\n"
+                        ".XXX.\n" };
+    EXPECT_EQ(sut.getBoard(), field2);
+}
+
 TEST_F(boardTest, whenConstructorWithFieldStateInStringIsCalledCorrectBoardIsCreated)
 {
     std::string field{ ".....\n"
@@ -229,6 +253,7 @@ TEST_F(boardTest, whenConstructorWithFieldStateInStringIsCalledCorrectBoardIsCre
     Board sut(field);
     EXPECT_EQ(sut.getBoard(), field);
 }
+
 // ----------------------------------------------
 
 TEST(playerTest, WhenInitThenPlayerPositionIsStart)

@@ -52,11 +52,12 @@ std::string Board::getBoard()
 
 void Board::fill()
 {
+    makePermanent();
     for(int y = 0; y < size(); ++y)
     {
         for(int x = 0; x < size(); ++x)
         {
-            // if(at(x, y) == SYMBOL::EMPTY) optimization thing
+            if(at(x, y) == SYMBOL::EMPTY) //optimization thing
                 if(isSurrounded(x, y)) 
                     fill(x, y);
         }
