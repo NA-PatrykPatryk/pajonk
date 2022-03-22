@@ -4,11 +4,6 @@ Board::Board(int size)
     : m_board(size, std::vector(size, SYMBOL::EMPTY))
     {}
 
-bool Board::inRange(int x, int y)
-{
-    return x >= 0 and x < size() and y >= 0 and y < size();
-}
-
 SYMBOL& Board::at(int x, int y)
 {
     return m_board.at(x).at(y);
@@ -37,6 +32,19 @@ std::string Board::getBoard()
     return board;
 }
 
+void Board::fill()
+{
+    for(int y = 0; y < size(); ++y)
+    {
+        for(int x = 0; x < size(); ++x)
+        {
+            // if(at(x, y) == SYMBOL::EMPTY) optimization thing
+                if(isSurrounded(x, y)) 
+                    fill(x, y);
+        }
+    }
+}
+
 void Board::fill(int x, int y)
 {
     if (at(x, y) != SYMBOL::BODY)
@@ -47,11 +55,6 @@ void Board::fill(int x, int y)
         fill(x, y - 1);
         fill(x, y + 1);
     }
-}
-
-int Board::size()
-{
-    return m_board.size();
 }
 
 bool Board::isSurrounded(int x, int y)
@@ -77,6 +80,16 @@ bool Board::isSurrounded(int x, int y, std::vector<std::vector<SYMBOL>>& boardC)
         return left && right && down && up;
     }
     return true;
+}
+
+int Board::size()
+{
+    return m_board.size();
+}
+
+bool Board::inRange(int x, int y)
+{
+    return x >= 0 and x < size() and y >= 0 and y < size();
 }
 
 std::string Board::getRow(int rowNumber) 

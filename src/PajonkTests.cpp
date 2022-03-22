@@ -184,6 +184,41 @@ TEST_F(boardTest, whenFieldIsNotSourroundedByBodyElements)
     EXPECT_TRUE(sut.isSurrounded(1, 1));
 }
 
+TEST_F(boardTest, whenFillIsCalledItWillDetectAndFillAllEnclosedSpaces)
+{
+    Board sut{ 5 };
+    sut.at(1, 0) = SYMBOL::BODY;
+    sut.at(2, 0) = SYMBOL::BODY;
+    sut.at(3, 0) = SYMBOL::BODY;
+
+    sut.at(0, 1) = SYMBOL::BODY;
+    sut.at(4, 1) = SYMBOL::BODY;
+
+    sut.at(0, 2) = SYMBOL::BODY;
+    sut.at(4, 2) = SYMBOL::BODY;
+
+    sut.at(1, 3) = SYMBOL::BODY;
+    sut.at(2, 3) = SYMBOL::BODY;
+    sut.at(3, 3) = SYMBOL::BODY;
+
+    std::string field1{ ".....\n"
+                        ".XXX.\n"
+                        "X...X\n"
+                        "X...X\n"
+                        ".XXX.\n" };
+    EXPECT_EQ(sut.getBoard(), field1);
+
+
+    sut.fill();
+    std::string field2{ ".....\n"
+                        ".XXX.\n"
+                        "XXXXX\n"
+                        "XXXXX\n"
+                        ".XXX.\n" };
+
+    EXPECT_EQ(sut.getBoard(), field2);
+}
+
 // ----------------------------------------------
 
 TEST(playerTest, WhenInitThenPlayerPositionIsStart)

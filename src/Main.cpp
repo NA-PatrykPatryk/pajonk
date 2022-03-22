@@ -9,8 +9,12 @@ int main()
     board.at(0, 0) = SYMBOL::HEAD;
     std::cout << board.getBoard();
 
+    std::cout << '\n';
+
     board.at(0, 1) = SYMBOL::BODY;
     std::cout << board.getBoard();
+    
+    std::cout << '\n';
 
     std::cout << "\033[1;31m"
                 << "███\tRED"
@@ -28,6 +32,10 @@ int main()
                 << "███\tBLUE"
                 << "\033[0m \n";
 
+    std::cout << "\033[1;37m"
+                << "███\tWHITE"
+                << "\033[0m \n";
+    
 
     return 0;
 }
