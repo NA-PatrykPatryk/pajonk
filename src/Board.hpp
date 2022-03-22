@@ -15,6 +15,7 @@ class Board
 {
 public:
     Board(int = 20);
+    Board(std::string);
 public:
     SYMBOL& at(int, int);
     void makePermanent();
@@ -27,6 +28,7 @@ private:
     bool isSurrounded(int, int, std::vector<std::vector<SYMBOL>>&);
     bool inRange(int, int);
 	std::string getRow(int rowNumber);
+    void rotateBoard();
 private:
     std::vector<std::vector<SYMBOL>> m_board{ };
 };

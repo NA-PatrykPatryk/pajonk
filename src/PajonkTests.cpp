@@ -219,6 +219,16 @@ TEST_F(boardTest, whenFillIsCalledItWillDetectAndFillAllEnclosedSpaces)
     EXPECT_EQ(sut.getBoard(), field2);
 }
 
+TEST_F(boardTest, whenConstructorWithFieldStateInStringIsCalledCorrectBoardIsCreated)
+{
+    std::string field{ ".....\n"
+                       ".XX..\n"
+                       "X....\n"
+                       "X....\n"
+                       ".XX..\n" };
+    Board sut(field);
+    EXPECT_EQ(sut.getBoard(), field);
+}
 // ----------------------------------------------
 
 TEST(playerTest, WhenInitThenPlayerPositionIsStart)
