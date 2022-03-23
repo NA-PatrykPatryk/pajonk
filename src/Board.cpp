@@ -1,12 +1,12 @@
 #include "Board.hpp"
 
 Board::Board(int size)
-    : m_board(size, std::vector(size, SYMBOL::EMPTY))
+    : m_board(size, std::vector(size, Tile()))
     {}
 
 Board::Board(std::string boardState)
 {
-    std::vector<SYMBOL> temp;
+    std::vector<Tile> temp;
     for(auto& c : boardState)
     {
         if(c == '.') temp.push_back(SYMBOL::EMPTY);
@@ -22,7 +22,7 @@ Board::Board(std::string boardState)
     rotateBoard();
 }
 
-SYMBOL& Board::at(int x, int y)
+Tile& Board::at(int x, int y)
 {
     return m_board.at(x).at(y);
 }
@@ -31,9 +31,9 @@ void Board::makePermanent()
 {
     for (auto& vec : m_board)
     {
-        for (auto& symbol : vec)
+        for (auto& tile : vec)
         {
-            if (symbol == SYMBOL::TAIL) symbol = SYMBOL::BODY;
+            if (tile.m_symbol == SYMBOL::TAIL) tile.m_symbol = SYMBOL::BODY;
         }
     }
 }
@@ -57,7 +57,7 @@ void Board::fill()
     {
         for(int x = 0; x < size(); ++x)
         {
-            if(at(x, y) == SYMBOL::EMPTY) //optimization thing
+            if(at(x, y).m_symbol == SYMBOL::EMPTY) //optimization thing
                 if(isSurrounded(x, y)) 
                     fill(x, y);
         }
@@ -66,9 +66,9 @@ void Board::fill()
 
 void Board::fill(int x, int y)
 {
-    if (at(x, y) != SYMBOL::BODY)
+    if (at(x, y).m_symbol != SYMBOL::BODY)
     {
-        at(x, y) = SYMBOL::BODY;
+        at(x, y).m_symbol = SYMBOL::BODY;
         fill(x - 1, y);
         fill(x + 1, y);
         fill(x, y - 1);
@@ -78,19 +78,19 @@ void Board::fill(int x, int y)
 
 bool Board::isSurrounded(int x, int y)
 {
-    std::vector<std::vector<SYMBOL>> board = m_board;
+    std::vector<std::vector<Tile>> board = m_board;
 
     return isSurrounded(x, y, board);
 }
 
-bool Board::isSurrounded(int x, int y, std::vector<std::vector<SYMBOL>>& boardC)
+bool Board::isSurrounded(int x, int y, std::vector<std::vector<Tile>>& boardC)
 {
     if (not inRange(x, y)) return false;
-    if (boardC.at(x).at(y) == SYMBOL::CHECKED) return true;
+    if (boardC.at(x).at(y).m_symbol == SYMBOL::CHECKED) return true;
 
-    if (boardC.at(x).at(y) != SYMBOL::BODY )
+    if (boardC.at(x).at(y).m_symbol != SYMBOL::BODY )
     {
-        boardC.at(x).at(y) = SYMBOL::CHECKED;
+        boardC.at(x).at(y).m_symbol = SYMBOL::CHECKED;
         bool left = isSurrounded(x - 1, y, boardC);
         bool right = isSurrounded(x + 1, y, boardC);
         bool down = isSurrounded(x, y - 1, boardC);
@@ -115,7 +115,7 @@ std::string Board::getRow(int rowNumber)
 {
     std::string row{};
     for (int i{ 0 }; i < size(); ++i) {
-        row += static_cast<char>(at(i, rowNumber));
+        row += static_cast<char>(at(i, rowNumber).m_symbol);
     }
     return row;
 }
@@ -126,7 +126,7 @@ void Board::rotateBoard()
     { 
         for (int x = y; x < size() - y - 1; ++x) 
         { 
-            SYMBOL temp = at(y, x); 
+            SYMBOL temp = at(y, x).m_symbol; 
             at(y, x) = at(size() - 1 - x, y); 
             at(size() - 1 - x, y) = at(size() - 1 - y, size() - 1 - x); 
             at(size() - 1 - y, size() - 1 - x) = at(x, size() - 1 - y); 

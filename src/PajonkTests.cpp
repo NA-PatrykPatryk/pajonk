@@ -21,7 +21,7 @@ TEST_F(boardTest, whenBoardIsInitializedWith5ItsSizeShouldBe5)
 
 TEST_F(boardTest, whenBoardIsInitializedItShouldContainDots) 
 {
-    EXPECT_EQ(boardSut.at(0,0), SYMBOL::EMPTY);
+    EXPECT_EQ(boardSut.at(0,0).m_symbol, SYMBOL::EMPTY);
 }
 
 TEST_F(boardTest, whenBoardHasSize2ReturnCorrectBoard)
@@ -46,7 +46,7 @@ TEST_F(boardTest, whenRequestedTurnsTailIntoBodyIn1By1Board)
     Board sut{ 1 };
     sut.at(0, 0) = SYMBOL::TAIL;
     sut.makePermanent();
-    EXPECT_EQ(sut.at(0, 0), SYMBOL::BODY);
+    EXPECT_EQ(sut.at(0, 0).m_symbol, SYMBOL::BODY);
 }
 
 TEST_F(boardTest, whenRequestedTurnsTailIntoBodyIn3By3Board)

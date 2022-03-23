@@ -11,13 +11,32 @@ enum class SYMBOL : char
     CHECKED = 'C'
 };
 
+enum class COLOR
+{
+    RED = 31,
+    GREEN = 32,
+    YELLOW = 33,
+    BLUE = 34,
+    WHITE = 37
+};
+
+struct Tile
+{
+    Tile(SYMBOL symbol = SYMBOL::EMPTY, COLOR color = COLOR::WHITE)
+    : m_symbol(symbol), m_color(color)
+    {}
+
+    SYMBOL m_symbol;
+    COLOR m_color;
+};
+
 class Board
 {
 public:
     Board(int = 20);
     Board(std::string);
 public:
-    SYMBOL& at(int, int);
+    Tile& at(int, int);
     void makePermanent();
     std::string getBoard();
     void fill();
@@ -25,10 +44,10 @@ public:
     bool isSurrounded(int, int);
     int size();
 private:
-    bool isSurrounded(int, int, std::vector<std::vector<SYMBOL>>&);
+    bool isSurrounded(int, int, std::vector<std::vector<Tile>>&);
     bool inRange(int, int);
 	std::string getRow(int rowNumber);
     void rotateBoard();
 private:
-    std::vector<std::vector<SYMBOL>> m_board{ };
+    std::vector<std::vector<Tile>> m_board{ };
 };
