@@ -1,4 +1,5 @@
 #include "Board.hpp"
+#include <iostream>
 
 Board::Board(int size)
     : m_board(size, std::vector(size, Tile()))
@@ -48,6 +49,37 @@ std::string Board::getBoard()
     }
 
     return board;
+}
+
+void Board::printBoard()
+{
+    for (int i{ size() - 1 }; i >= 0; --i)
+    {
+        for (int j = 0; j < size(); ++j)
+        {
+            switch (at(j, i).m_color)
+            {
+            case COLOR::RED:
+                std::cout << "\033[1;31m";
+                break;
+            case COLOR::GREEN:
+                std::cout << "\033[1;32m";        
+                break;
+            case COLOR::YELLOW:
+                std::cout << "\033[1;33m";        
+                break;
+            case COLOR::BLUE:
+                std::cout << "\033[1;34m";        
+                break;
+            default:
+                std::cout << "\033[1;37m";  
+                break;
+            }
+            std::cout << static_cast<char>(at(j, i).m_symbol)
+                      << "\033[0m";
+        }
+        std::cout << std::endl;
+    }
 }
 
 void Board::fill()

@@ -39,6 +39,7 @@ public:
     Tile& at(int, int);
     void makePermanent();
     std::string getBoard();
+    void printBoard();
     void fill();
     void fill(int, int);
     bool isSurrounded(int, int);

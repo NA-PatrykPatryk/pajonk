@@ -35,7 +35,14 @@ int main()
     std::cout << "\033[1;37m"
                 << "███\tWHITE"
                 << "\033[0m \n";
-    
+
+    Board sut1(".....\n"
+               ".XXX.\n"
+               "X...o\n"
+               "X...o\n"
+               ".XXX.\n");
+
+    sut1.printBoard();    
 
     return 0;
 }
