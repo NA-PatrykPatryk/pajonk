@@ -227,13 +227,7 @@ TEST_F(boardTest, whenUsingFillItMakesTailPermamentAndFillsAllSurroundedBlocks)
               "X...o\n"
               ".XXX.\n");
 
-    std::cout << "test" << std::endl;
-    std::cout << sut.getBoard() << std::endl;
-
     sut.fill();
-
-    std::cout << sut.getBoard() << std::endl;
-    std::cout << "test" << std::endl;
 
     std::string field2{ ".....\n"
                         ".XXX.\n"

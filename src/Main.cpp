@@ -42,7 +42,11 @@ int main()
                "X...o\n"
                ".XXX.\n");
 
-    sut1.printBoard();    
+    sut1.at(0, 1).m_color = COLOR::BLUE;
+    sut1.at(1, 3).m_color = COLOR::RED;
+    sut1.printBoard();
+    sut1.fill();   
+    sut1.printBoard(); 
 
     return 0;
 }
