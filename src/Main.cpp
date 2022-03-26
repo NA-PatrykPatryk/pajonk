@@ -42,11 +42,19 @@ int main()
                "X...o\n"
                ".XXX.\n");
 
+    sut1.printBoard();
+    sut1.fill(COLOR::WHITE);  
+    sut1.makePermanent();
+    sut1.printBoard();
+    sut1.fill(COLOR::WHITE);   
     sut1.at(0, 1).m_color = COLOR::BLUE;
     sut1.at(1, 3).m_color = COLOR::RED;
+    Tile temp = sut1.at(0, 1); 
+    temp = SYMBOL::HEAD;
+    sut1.at(1, 1) = temp;
+    sut1.at(2, 2).m_color = COLOR::GREEN;
+    sut1.at(3, 3).m_symbol = SYMBOL::TAIL;
     sut1.printBoard();
-    sut1.fill();   
-    sut1.printBoard(); 
 
     return 0;
 }

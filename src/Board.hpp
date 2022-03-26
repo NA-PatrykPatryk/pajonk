@@ -40,12 +40,15 @@ public:
     void makePermanent();
     std::string getBoard();
     void printBoard();
+    void fill(COLOR);
     void fill();
     void fill(int, int);
+    void fill(int, int, COLOR);
     bool isSurrounded(int, int);
     int size();
 private:
     bool isSurrounded(int, int, std::vector<std::vector<Tile>>&);
+    bool isSurrounded(int, int, std::vector<std::vector<Tile>>&, COLOR);
     bool inRange(int, int);
 	std::string getRow(int rowNumber);
     void rotateBoard();

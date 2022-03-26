@@ -50,13 +50,13 @@ TEST_F(boardTest, whenRequestedTurnsTailIntoBodyIn1By1Board)
     EXPECT_EQ(sut.at(0, 0).m_symbol, SYMBOL::BODY);
 }
 
-TEST_F(boardTest, whenRequestedTurnsTailIntoBodyIn3By3Board)
+TEST_F(boardTest, whenRequestedTurnsTailIntoBody)
 {
     Board sut{ 3 };
-    sut.at(0, 0) = SYMBOL::TAIL;
-    sut.at(1, 0) = SYMBOL::TAIL;
-    sut.at(2, 0) = SYMBOL::TAIL;
-    sut.at(2, 1) = SYMBOL::TAIL;
+    sut.at(0, 0).m_symbol = SYMBOL::TAIL;
+    sut.at(1, 0).m_symbol = SYMBOL::TAIL;
+    sut.at(2, 0).m_symbol = SYMBOL::TAIL;
+    sut.at(2, 1).m_symbol = SYMBOL::TAIL;
     sut.makePermanent();
     std::string field{ "...\n"
                        "..X\n"
@@ -247,6 +247,40 @@ TEST_F(boardTest, whenConstructorWithFieldStateInStringIsCalledCorrectBoardIsCre
                        ".XX..\n" };
     Board sut(field);
     EXPECT_EQ(sut.getBoard(), field);
+}
+
+TEST_F(boardTest, whenBorderIsInNotMatchingColorsItWillNotBeFilled)
+{
+    std::string field{ ".....\n"
+                       ".XXX.\n"
+                       "X...X\n"
+                       "X...X\n"
+                       ".XXX.\n" };
+    Board sut(field);
+
+    sut.at(1, 0) = {SYMBOL::BODY, COLOR::RED};
+
+    sut.fill(COLOR::WHITE);
+    EXPECT_EQ(sut.getBoard(), field);
+}
+
+TEST_F(boardTest, whenBorderIsInMatchingColorsItWillBeFilled)
+{
+    std::string field1{ ".....\n"
+                       ".XXX.\n"
+                       "X...X\n"
+                       "X...X\n"
+                       ".XXX.\n" };
+    Board sut(field1);
+    
+    sut.fill(COLOR::WHITE);
+
+    std::string field2{ ".....\n"
+                       ".XXX.\n"
+                       "XXXXX\n"
+                       "XXXXX\n"
+                       ".XXX.\n" };
+    EXPECT_EQ(sut.getBoard(), field2);
 }
 
 // ----------------------------------------------

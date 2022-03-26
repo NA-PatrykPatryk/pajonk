@@ -82,6 +82,51 @@ void Board::printBoard()
     }
 }
 
+void Board::fill(COLOR color)
+{
+    // makePermanent(); // correct this!
+    std::vector<std::vector<Tile>> boardC = m_board;
+    for(int y = 0; y < size(); ++y)
+    {
+        for(int x = 0; x < size(); ++x)
+        {
+            if(boardC.at(x).at(y).m_symbol == SYMBOL::EMPTY) //optimization thing
+                if(isSurrounded(x, y, boardC, color)) 
+                    fill(x, y, color);
+        }
+    }
+}
+
+bool Board::isSurrounded(int x, int y, std::vector<std::vector<Tile>>& boardC, COLOR color)
+{
+    if (not inRange(x, y)) return false;
+    if (boardC.at(x).at(y).m_symbol == SYMBOL::CHECKED) return true;
+
+    if (boardC.at(x).at(y).m_symbol == SYMBOL::BODY 
+    && boardC.at(x).at(y).m_color == color) return true;
+
+    boardC.at(x).at(y).m_symbol = SYMBOL::CHECKED;
+    bool left = isSurrounded(x - 1, y, boardC, color);
+    bool right = isSurrounded(x + 1, y, boardC, color);
+    bool down = isSurrounded(x, y - 1, boardC, color);
+    bool up = isSurrounded(x, y + 1, boardC, color);
+
+    return left && right && down && up;
+
+}
+
+void Board::fill(int x, int y, COLOR color)
+{
+    if (at(x, y).m_symbol == SYMBOL::BODY && at(x, y).m_color == color) return;
+    
+    at(x, y).m_symbol = SYMBOL::BODY;
+    at(x, y).m_color = color;
+    fill(x - 1, y, color);
+    fill(x + 1, y, color);
+    fill(x, y - 1, color);
+    fill(x, y + 1, color);
+}
+
 void Board::fill()
 {
     makePermanent();
@@ -158,7 +203,7 @@ void Board::rotateBoard()
     { 
         for (int x = y; x < size() - y - 1; ++x) 
         { 
-            SYMBOL temp = at(y, x).m_symbol; 
+            Tile temp = at(y, x); 
             at(y, x) = at(size() - 1 - x, y); 
             at(size() - 1 - x, y) = at(size() - 1 - y, size() - 1 - x); 
             at(size() - 1 - y, size() - 1 - x) = at(x, size() - 1 - y); 
