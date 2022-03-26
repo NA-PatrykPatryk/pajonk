@@ -407,7 +407,6 @@ TEST(playerTest, WhenPlayerMeetsHisTailThenHeDies)
 			.WillOnce(testing::Return(doChangeDirectionToLeft))
 		.WillOnce(testing::Return(doNotChangeDirection));
 
-
 	for(size_t i{0}; i < 9; ++i) {
 		sut.setDirectionBasedOnChange(input.directionChange());
 		sut.move();
@@ -463,6 +462,9 @@ TEST(playerTest, WhenPlayerTurnedRightMoreThanLeftAndEndedAtBeginThenInsideIsOnT
 		dspl.mark(sut.getPosition()); dspl.drawCurrent();
 	}
 
+	// being back exactly at the start position is a must, in order that checking turnRightCounter
+	// is meaningful for determining inside of an area on the right or on the left
+	// being back at the start is a must in order to check turnRightCounter is sensible
 	EXPECT_EQ(sut.getPosition(), startPosition); // inside is on the right of a tail
 	EXPECT_TRUE((sut.m_turnRightCounter > 0)); // inside is on the right of a tail
 }
