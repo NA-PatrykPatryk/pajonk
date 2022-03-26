@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 #include "Board.hpp"
 #include "Player.hpp"
 
@@ -285,3 +286,30 @@ TEST(playerTest, WhenMoveUPRightDownLeftThenBackToStartPosition)
 
 	EXPECT_EQ(sut.getPosition(), startPosition);
 }
+
+/////////
+
+/*
+// struct Input
+// {
+//     MOCK_METHOD(char, getInput, (), ());
+// }
+
+// TEST(someTest, whenStartPositionIs00AndDirectionIsUPAnd2MovesElapsedAndInputWasEMPTYANDRIGHTThenPositionIs02)
+// {
+//     Player sut({0, 0});
+//     Input input;
+//     sut.setDirection(DIRECTION::UP);
+//     EXPECT_CALL(input, getInput)
+//         .WillOnce().Return 0
+//         .WillOnce().Return 'r';
+//     sut.checkDirectionBasedOnInput(input);
+//     sut.move();
+
+//     sut.checkDirectionBasedOnInput(input);
+//     sut.move();
+
+//     Position endPos{1, 1};
+//     EXPECT_EQ(sut.getPosition(), endPos);
+// }
+*/

@@ -38,3 +38,15 @@ void Player::move()
             break;
     }
 }
+
+// void Player::checkDirectionBasedOnInput(Input input)
+// {
+//     switch(input.getInput())
+//     {
+//         case 'r':
+//             setDirection(DIRECTION::RIGHT);
+//             break;
+//         default:
+//             break;
+//     }
+// }
