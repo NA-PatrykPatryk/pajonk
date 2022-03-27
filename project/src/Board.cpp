@@ -5,7 +5,7 @@ Board::Board(int size)
     :  m_size{size}, m_board(size * size, Tile())
     {}
 
-Board::Board(std::string boardState) : m_board {}
+Board::Board(std::string boardState) : m_board()
 {
     for(size_t i = 1; i < boardState.length(); ++i)
     {
@@ -83,6 +83,17 @@ void Board::fill(COLOR color)
             if(boardC.at(x + reverse(y) * size()).m_symbol == SYMBOL::EMPTY)
                 if(isSurrounded(x, y, boardC, color)) 
                     fill(x, y, color);
+        }
+    }
+}
+
+void Board::populate(int x, int y, COLOR color)
+{
+    for(int i = -1; i < 2; ++i)
+    {
+        for(int j = -1; j < 2; ++j)
+        {
+            at(x + i, y + j) = {SYMBOL::BODY, color};
         }
     }
 }

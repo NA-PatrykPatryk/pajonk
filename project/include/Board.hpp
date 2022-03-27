@@ -24,6 +24,7 @@ public:
     void printBoard();
     std::string getBoard();
     void fill(COLOR = COLOR::WHITE);
+    void populate(int, int, COLOR);
     int size();
 private:
     void fill(int, int, COLOR = COLOR::WHITE);

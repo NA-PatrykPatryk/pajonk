@@ -6,8 +6,8 @@ bool Position::operator==(const Position& rhs) const
 }
 
 
-Player::Player(Position startPosition, COLOR color)
-    : m_position(startPosition), m_color(color) 
+Player::Player(Position startPosition, COLOR color, DIRECTION direction)
+    : m_position(startPosition), m_color(color), m_direction(direction)
     {}
 
 Position Player::getPosition()

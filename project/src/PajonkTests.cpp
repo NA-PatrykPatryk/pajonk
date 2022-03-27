@@ -183,6 +183,20 @@ TEST_F(boardTest, whenBorderIsInMatchingColorsItWillBeFilled)
     EXPECT_EQ(sut.getBoard(), field2);
 }
 
+TEST_F(boardTest, whenPopulateIsCalledItWillMake3By3SquareWithGivenCordsAsCentre)
+{
+    std::string field1{ "...\n"
+                        "...\n"
+                        "...\n" };
+    Board sut(field1);
+
+    sut.populate(1, 1, COLOR::WHITE);
+    std::string field2{ "XXX\n"
+                        "XXX\n"
+                        "XXX\n" };
+    EXPECT_EQ(sut.getBoard(), field2);
+}
+
 /*
  * Tests for Board end here
  * Tests for Player start here
@@ -251,7 +265,10 @@ TEST(playerTest, whenAssignedPlayerRememberItsColor)
  * Tests for Game start here
  */
 
+// TEST(GameTest, whenGameIsSetupWithDefaultsItCreatesGivenField)
+// {
 
+// }
 
 /////////
 

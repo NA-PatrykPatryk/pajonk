@@ -14,7 +14,7 @@ struct Position
 class Player
 {
 public:
-	Player(Position, COLOR = COLOR::WHITE);
+	Player(Position = {0, 0}, COLOR = COLOR::WHITE, DIRECTION = DIRECTION::UP);
 	Position getPosition();
 	Position getPrevPosition();
 	COLOR getColor();
