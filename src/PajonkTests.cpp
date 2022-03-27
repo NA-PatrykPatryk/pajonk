@@ -42,14 +42,6 @@ TEST_F(boardTest, whenInputtedMarkAt00ItIsStoredCorrectly)
     EXPECT_EQ(sut.getBoard(), field);
 }
 
-TEST_F(boardTest, whenRequestedTurnsTailIntoBodyIn1By1Board)
-{
-    Board sut{ 1 };
-    sut.at(0, 0) = SYMBOL::TAIL;
-    sut.makePermanent();
-    EXPECT_EQ(sut.at(0, 0).m_symbol, SYMBOL::BODY);
-}
-
 TEST_F(boardTest, whenConstructorWithFieldStateInStringIsCalledCorrectBoardIsCreated)
 {
     std::string field{ ".....\n"
@@ -61,14 +53,22 @@ TEST_F(boardTest, whenConstructorWithFieldStateInStringIsCalledCorrectBoardIsCre
     EXPECT_EQ(sut.getBoard(), field);
 }
 
-TEST_F(boardTest, whenRequestedTurnsTailIntoBody)
+TEST_F(boardTest, whenRequestedTurnsTailIntoBodyIn1By1BoardUsingFillMethod)
+{
+    Board sut{ 1 };
+    sut.at(0, 0) = SYMBOL::TAIL;
+    sut.fill(COLOR::WHITE);
+    EXPECT_EQ(sut.at(0, 0).m_symbol, SYMBOL::BODY);
+}
+
+TEST_F(boardTest, whenRequestedTurnsTailIntoBodyUsingFillMethod)
 {
     std::string field1{ "...\n"
                         "..o\n"
                         "ooo\n" };
     Board sut{ field1 };
 
-    sut.makePermanent();
+    sut.fill(COLOR::WHITE);
     std::string field2{ "...\n"
                         "..X\n"
                         "XXX\n" };
@@ -81,38 +81,24 @@ TEST_F(boardTest, whenFillIsCalledItFillsEmptyTileSurroundedByBody)
                         "X.X\n"
                         "XXX\n" };
     Board sut{ field1 };
-    
-    sut.fill(1, 1);
-    std::string field{ "XXX\n"
-                       "XXX\n"
-                       "XXX\n" };
-    EXPECT_EQ(sut.getBoard(), field);
+
+    sut.fill(COLOR::WHITE);
+    std::string field2{ "XXX\n"
+                        "XXX\n"
+                        "XXX\n" };
+    EXPECT_EQ(sut.getBoard(), field2);
 }
 
 TEST_F(boardTest, whenFillIsCalledItFillsEmptyTilesSurroundedByBody)
 {
-    Board sut{ 5 };
-    sut.at(0, 0) = SYMBOL::BODY;
-    sut.at(1, 0) = SYMBOL::BODY;
-    sut.at(2, 0) = SYMBOL::BODY;
-    sut.at(3, 0) = SYMBOL::BODY;
-    sut.at(4, 0) = SYMBOL::BODY;
-    sut.at(0, 1) = SYMBOL::BODY;
-    sut.at(4, 1) = SYMBOL::BODY;
-    sut.at(0, 2) = SYMBOL::BODY;
-    sut.at(4, 2) = SYMBOL::BODY;
-    sut.at(0, 3) = SYMBOL::BODY;
-    sut.at(1, 3) = SYMBOL::BODY;
-    sut.at(2, 3) = SYMBOL::BODY;
-    sut.at(3, 3) = SYMBOL::BODY;
-    sut.at(4, 3) = SYMBOL::BODY;
     std::string field1{ ".....\n"
                         "XXXXX\n"
                         "X...X\n"
                         "X...X\n"
                         "XXXXX\n" };
-    EXPECT_EQ(sut.getBoard(), field1);
-    sut.fill(1, 1);
+    Board sut(field1);
+
+    sut.fill(COLOR::WHITE);
     std::string field2{ ".....\n"
                         "XXXXX\n"
                         "XXXXX\n"
@@ -121,103 +107,16 @@ TEST_F(boardTest, whenFillIsCalledItFillsEmptyTilesSurroundedByBody)
     EXPECT_EQ(sut.getBoard(), field2);
 }
 
-TEST_F(boardTest, whenFieldIsSourroundedByBodyElementsReturnTrue)
-{
-    Board sut{ 3 };
-    sut.at(0, 0) = SYMBOL::BODY;
-    sut.at(0, 1) = SYMBOL::BODY;
-    sut.at(0, 2) = SYMBOL::BODY;
-    sut.at(1, 0) = SYMBOL::BODY;
-    sut.at(1, 2) = SYMBOL::BODY;
-    sut.at(2, 0) = SYMBOL::BODY;
-    sut.at(2, 1) = SYMBOL::BODY;
-    sut.at(2, 2) = SYMBOL::BODY;
-
-    EXPECT_TRUE(sut.isSurrounded(1, 1));
-}
-
-TEST_F(boardTest, whenFieldIsNotSourroundedByBodyElementsReturnFalse)
-{
-    Board sut{ 5 };
-    sut.at(0, 0) = SYMBOL::BODY;
-    sut.at(1, 0) = SYMBOL::BODY;
-    sut.at(2, 0) = SYMBOL::BODY;
-    sut.at(3, 0) = SYMBOL::BODY;
-    sut.at(4, 0) = SYMBOL::BODY;
-    sut.at(0, 1) = SYMBOL::BODY;
-    sut.at(4, 1) = SYMBOL::BODY;
-    sut.at(0, 2) = SYMBOL::BODY;
-    sut.at(4, 2) = SYMBOL::BODY;
-    sut.at(0, 3) = SYMBOL::BODY;
-    sut.at(1, 3) = SYMBOL::BODY;
-    sut.at(2, 3) = SYMBOL::BODY;
-    sut.at(3, 3) = SYMBOL::BODY;
-    sut.at(4, 3) = SYMBOL::BODY;
-
-    std::string field1{ ".....\n"
-                        "XXXXX\n"
-                        "X...X\n"
-                        "X...X\n"
-                        "XXXXX\n" };
-    EXPECT_EQ(sut.getBoard(), field1);
-
-    EXPECT_FALSE(sut.isSurrounded(1, 4));
-    EXPECT_TRUE(sut.isSurrounded(1, 1));
-}
-
-TEST_F(boardTest, whenFieldIsNotSourroundedByBodyElements)
-{
-    Board sut{ 5 };
-    sut.at(1, 0) = SYMBOL::BODY;
-    sut.at(2, 0) = SYMBOL::BODY;
-    sut.at(3, 0) = SYMBOL::BODY;
-
-    sut.at(0, 1) = SYMBOL::BODY;
-    sut.at(4, 1) = SYMBOL::BODY;
-
-    sut.at(0, 2) = SYMBOL::BODY;
-    sut.at(4, 2) = SYMBOL::BODY;
-
-    sut.at(1, 3) = SYMBOL::BODY;
-    sut.at(2, 3) = SYMBOL::BODY;
-    sut.at(3, 3) = SYMBOL::BODY;
-
-    std::string field1{ ".....\n"
-                        ".XXX.\n"
-                        "X...X\n"
-                        "X...X\n"
-                        ".XXX.\n" };
-    EXPECT_EQ(sut.getBoard(), field1);
-
-    EXPECT_TRUE(sut.isSurrounded(1, 1));
-}
-
 TEST_F(boardTest, whenFillIsCalledItWillDetectAndFillAllEnclosedSpaces)
 {
-    Board sut{ 5 };
-    sut.at(1, 0) = SYMBOL::BODY;
-    sut.at(2, 0) = SYMBOL::BODY;
-    sut.at(3, 0) = SYMBOL::BODY;
-
-    sut.at(0, 1) = SYMBOL::BODY;
-    sut.at(4, 1) = SYMBOL::BODY;
-
-    sut.at(0, 2) = SYMBOL::BODY;
-    sut.at(4, 2) = SYMBOL::BODY;
-
-    sut.at(1, 3) = SYMBOL::BODY;
-    sut.at(2, 3) = SYMBOL::BODY;
-    sut.at(3, 3) = SYMBOL::BODY;
-
     std::string field1{ ".....\n"
                         ".XXX.\n"
                         "X...X\n"
                         "X...X\n"
                         ".XXX.\n" };
-    EXPECT_EQ(sut.getBoard(), field1);
+    Board sut(field1);
 
-
-    sut.fill();
+    sut.fill(COLOR::WHITE);
     std::string field2{ ".....\n"
                         ".XXX.\n"
                         "XXXXX\n"
@@ -235,7 +134,7 @@ TEST_F(boardTest, whenUsingFillItMakesTailPermamentAndFillsAllSurroundedBlocks)
               "X...o\n"
               ".XXX.\n");
 
-    sut.fill();
+    sut.fill(COLOR::WHITE);
 
     std::string field2{ ".....\n"
                         ".XXX.\n"
@@ -254,7 +153,7 @@ TEST_F(boardTest, whenBorderIsInNotMatchingColorsItWillNotBeFilled)
                        ".XXX.\n" };
     Board sut(field);
 
-    sut.at(1, 0) = {SYMBOL::BODY, COLOR::RED};
+    sut.at(1, 1) = {SYMBOL::BODY, COLOR::RED};
 
     sut.fill(COLOR::WHITE);
     EXPECT_EQ(sut.getBoard(), field);

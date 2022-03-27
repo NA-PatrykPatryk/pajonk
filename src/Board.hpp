@@ -37,18 +37,15 @@ public:
     Board(std::string);
 public:
     Tile& at(int, int);
-    void makePermanent(COLOR = COLOR::WHITE);
-    std::string getBoard();
     void printBoard();
+    std::string getBoard();
     void fill(COLOR = COLOR::WHITE);
-    // void fill(int, int);
-    void fill(int, int, COLOR = COLOR::WHITE);
-    bool isSurrounded(int, int);
     int size();
 private:
+    void fill(int, int, COLOR = COLOR::WHITE);
+    void makePermanent(COLOR = COLOR::WHITE);
     bool isSurrounded(int, int, std::vector<Tile>&, COLOR = COLOR::WHITE);
     bool inRange(int, int);
-	std::string getRow(int rowNumber);
 private:
     int m_size {};
     std::vector<Tile> m_board {};

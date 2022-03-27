@@ -30,29 +30,6 @@ Tile& Board::at(int x, int y)
     return m_board.at(x + y * size());
 }
 
-void Board::makePermanent(COLOR color)
-{
-    for (auto& tile : m_board)
-    {
-        if (tile.m_symbol == SYMBOL::TAIL && tile.m_color == color) 
-            tile.m_symbol = SYMBOL::BODY;
-    }
-}
-
-std::string Board::getBoard()
-{
-    std::string board{};
-
-    for (size_t i = 0; i < m_board.size(); ++i)
-    {
-        board += static_cast<char>(m_board.at(i).m_symbol);
-        if ((i + 1) % (size()) == 0) 
-            board += '\n';
-    }
-
-    return board;
-}
-
 void Board::printBoard()
 {
     for (size_t i = 0; i < m_board.size(); ++i)
@@ -81,6 +58,20 @@ void Board::printBoard()
     }
 }
 
+std::string Board::getBoard()
+{
+    std::string board{};
+
+    for (size_t i = 0; i < m_board.size(); ++i)
+    {
+        board += static_cast<char>(m_board.at(i).m_symbol);
+        if ((i + 1) % (size()) == 0) 
+            board += '\n';
+    }
+
+    return board;
+}
+
 void Board::fill(COLOR color)
 {
     makePermanent(color);
@@ -93,6 +84,32 @@ void Board::fill(COLOR color)
                 if(isSurrounded(x, y, boardC, color)) 
                     fill(x, y, color);
         }
+    }
+}
+
+int Board::size()
+{
+    return m_size;
+}
+
+void Board::fill(int x, int y, COLOR color)
+{
+    if (at(x, y).m_symbol == SYMBOL::BODY && at(x, y).m_color == color) return;
+    
+    at(x, y).m_symbol = SYMBOL::BODY;
+    at(x, y).m_color = color;
+    fill(x - 1, y, color);
+    fill(x + 1, y, color);
+    fill(x, y - 1, color);
+    fill(x, y + 1, color);
+}
+
+void Board::makePermanent(COLOR color)
+{
+    for (auto& tile : m_board)
+    {
+        if (tile.m_symbol == SYMBOL::TAIL && tile.m_color == color) 
+            tile.m_symbol = SYMBOL::BODY;
     }
 }
 
@@ -114,52 +131,7 @@ bool Board::isSurrounded(int x, int y, std::vector<Tile>& boardC, COLOR color)
 
 }
 
-void Board::fill(int x, int y, COLOR color)
-{
-    if (at(x, y).m_symbol == SYMBOL::BODY && at(x, y).m_color == color) return;
-    
-    at(x, y).m_symbol = SYMBOL::BODY;
-    at(x, y).m_color = color;
-    fill(x - 1, y, color);
-    fill(x + 1, y, color);
-    fill(x, y - 1, color);
-    fill(x, y + 1, color);
-}
-
-// void Board::fill(int x, int y)
-// {
-//     if (at(x, y).m_symbol != SYMBOL::BODY)
-//     {
-//         at(x, y).m_symbol = SYMBOL::BODY;
-//         fill(x - 1, y);
-//         fill(x + 1, y);
-//         fill(x, y - 1);
-//         fill(x, y + 1);
-//     }
-// }
-
-bool Board::isSurrounded(int x, int y)
-{
-    std::vector<Tile> board = m_board;
-
-    return isSurrounded(x, y, board);
-}
-
-int Board::size()
-{
-    return m_size;
-}
-
 bool Board::inRange(int x, int y)
 {
     return x >= 0 and x < size() and y >= 0 and y < size();
-}
-
-std::string Board::getRow(int rowNumber) 
-{
-    std::string row{};
-    for (int i{ 0 }; i < size(); ++i) {
-        row += static_cast<char>(at(i, rowNumber).m_symbol);
-    }
-    return row;
 }
