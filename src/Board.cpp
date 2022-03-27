@@ -28,13 +28,13 @@ Tile& Board::at(int x, int y)
     return m_board.at(x).at(y);
 }
 
-void Board::makePermanent()
+void Board::makePermanent(COLOR color)
 {
     for (auto& vec : m_board)
     {
         for (auto& tile : vec)
         {
-            if (tile.m_symbol == SYMBOL::TAIL) tile.m_symbol = SYMBOL::BODY;
+            if (tile.m_symbol == SYMBOL::TAIL && tile.m_color == color) tile.m_symbol = SYMBOL::BODY;
         }
     }
 }
@@ -84,7 +84,7 @@ void Board::printBoard()
 
 void Board::fill(COLOR color)
 {
-    // makePermanent(); // correct this!
+    makePermanent(color); // correct this!
     std::vector<std::vector<Tile>> boardC = m_board;
     for(int y = 0; y < size(); ++y)
     {
@@ -127,20 +127,6 @@ void Board::fill(int x, int y, COLOR color)
     fill(x, y + 1, color);
 }
 
-void Board::fill()
-{
-    makePermanent();
-    for(int y = 0; y < size(); ++y)
-    {
-        for(int x = 0; x < size(); ++x)
-        {
-            if(at(x, y).m_symbol == SYMBOL::EMPTY) //optimization thing
-                if(isSurrounded(x, y)) 
-                    fill(x, y);
-        }
-    }
-}
-
 void Board::fill(int x, int y)
 {
     if (at(x, y).m_symbol != SYMBOL::BODY)
@@ -158,24 +144,6 @@ bool Board::isSurrounded(int x, int y)
     std::vector<std::vector<Tile>> board = m_board;
 
     return isSurrounded(x, y, board);
-}
-
-bool Board::isSurrounded(int x, int y, std::vector<std::vector<Tile>>& boardC)
-{
-    if (not inRange(x, y)) return false;
-    if (boardC.at(x).at(y).m_symbol == SYMBOL::CHECKED) return true;
-
-    if (boardC.at(x).at(y).m_symbol != SYMBOL::BODY )
-    {
-        boardC.at(x).at(y).m_symbol = SYMBOL::CHECKED;
-        bool left = isSurrounded(x - 1, y, boardC);
-        bool right = isSurrounded(x + 1, y, boardC);
-        bool down = isSurrounded(x, y - 1, boardC);
-        bool up = isSurrounded(x, y + 1, boardC);
-
-        return left && right && down && up;
-    }
-    return true;
 }
 
 int Board::size()
