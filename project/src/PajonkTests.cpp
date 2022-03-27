@@ -1,7 +1,12 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-#include "Board.hpp"
-#include "Player.hpp"
+#include "../include/Board.hpp"
+#include "../include/Player.hpp"
+
+
+/*
+ * Tests for Board start here
+ */
 
 struct boardTest :public ::testing::Test
 {
@@ -178,7 +183,15 @@ TEST_F(boardTest, whenBorderIsInMatchingColorsItWillBeFilled)
     EXPECT_EQ(sut.getBoard(), field2);
 }
 
-// ----------------------------------------------
+/*
+ * Tests for Board end here
+ * Tests for Player start here
+ */
+
+struct playerTest :public ::testing::Test
+{
+    Player playerSut;
+};
 
 TEST(playerTest, WhenInitThenPlayerPositionIsStart)
 {
@@ -214,6 +227,16 @@ TEST(playerTest, WhenMoveUPRightDownLeftThenBackToStartPosition)
     sut.move();
 
 	EXPECT_EQ(sut.getPosition(), startPosition);
+}
+
+TEST(playerTest, whenPlayerMovesItRemembersItsPreviousPosition)
+{
+	Position startPosition{0, 0};
+	Player sut{startPosition};
+
+    sut.setDirection(DIRECTION::UP);
+    sut.move();
+	EXPECT_EQ(sut.getPrevPosition(), startPosition);
 }
 
 /////////

@@ -1,10 +1,6 @@
 #pragma once
 #include <vector>
-
-enum class DIRECTION 
-{
-	UP, DOWN, LEFT, RIGHT
-};
+#include "../include/Directions.hpp"
 
 struct Position
 {
@@ -19,11 +15,12 @@ class Player
 public:
 	Player(Position startPosition);
 	Position getPosition();
+	Position getPrevPosition();
 	void setDirection(DIRECTION);
-	// void checkDirectionBasedOnInput(Input input);
 	void move();
 
 private:
-	Position m_position;
 	DIRECTION m_direction;
+	Position m_position;
+	Position m_prevPosition;
 };

@@ -1,4 +1,4 @@
-#include "Player.hpp"
+#include "../include/Player.hpp"
 
 bool Position::operator==(const Position& rhs) const
 {
@@ -15,6 +15,11 @@ Position Player::getPosition()
     return m_position;
 }
 
+Position Player::getPrevPosition()
+{
+    return m_prevPosition;
+}
+
 void Player::setDirection(DIRECTION direction)
 {
     m_direction = direction;
@@ -22,6 +27,7 @@ void Player::setDirection(DIRECTION direction)
 
 void Player::move()
 {
+    m_prevPosition = m_position;
     switch(m_direction)
     {
         case DIRECTION::UP:
@@ -38,15 +44,3 @@ void Player::move()
             break;
     }
 }
-
-// void Player::checkDirectionBasedOnInput(Input input)
-// {
-//     switch(input.getInput())
-//     {
-//         case 'r':
-//             setDirection(DIRECTION::RIGHT);
-//             break;
-//         default:
-//             break;
-//     }
-// }

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Board.hpp"
+#include "../include/Board.hpp"
 
 int main()
 {
@@ -44,7 +44,6 @@ int main()
 
     sut1.printBoard();
     sut1.fill(COLOR::WHITE);  
-    sut1.makePermanent();
     sut1.printBoard();
     sut1.fill(COLOR::WHITE);   
     sut1.at(0, 1).m_color = COLOR::BLUE;

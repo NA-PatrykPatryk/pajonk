@@ -1,24 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
-
-enum class SYMBOL : char
-{
-    EMPTY = '.',
-    HEAD = 'O',
-    TAIL = 'o',
-    BODY = 'X',
-    CHECKED = 'C'
-};
-
-enum class COLOR
-{
-    RED = 31,
-    GREEN = 32,
-    YELLOW = 33,
-    BLUE = 34,
-    WHITE = 37
-};
+#include "../include/Colors.hpp"
+#include "../include/Symbols.hpp"
 
 struct Tile
 {
