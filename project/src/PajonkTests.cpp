@@ -188,11 +188,6 @@ TEST_F(boardTest, whenBorderIsInMatchingColorsItWillBeFilled)
  * Tests for Player start here
  */
 
-struct playerTest :public ::testing::Test
-{
-    Player playerSut;
-};
-
 TEST(playerTest, WhenInitThenPlayerPositionIsStart)
 {
 	Position startPosition{0, 0};
@@ -237,6 +232,18 @@ TEST(playerTest, whenPlayerMovesItRemembersItsPreviousPosition)
     sut.setDirection(DIRECTION::UP);
     sut.move();
 	EXPECT_EQ(sut.getPrevPosition(), startPosition);
+}
+
+TEST(playerTest, whenInitializedPlayerIsAssignedColorWhiteByDefault)
+{
+    Player sut({0, 0});
+	EXPECT_EQ(sut.getColor(), COLOR::WHITE);
+}
+
+TEST(playerTest, whenAssignedPlayerRememberItsColor)
+{
+    Player sut({0, 0}, COLOR::RED);
+	EXPECT_EQ(sut.getColor(), COLOR::RED);
 }
 
 /*

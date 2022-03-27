@@ -14,14 +14,16 @@ struct Position
 class Player
 {
 public:
-	Player(Position startPosition);
+	Player(Position, COLOR = COLOR::WHITE);
 	Position getPosition();
 	Position getPrevPosition();
+	COLOR getColor();
 	void setDirection(DIRECTION);
 	void move();
 
 private:
-	DIRECTION m_direction;
 	Position m_position;
 	Position m_prevPosition;
+	COLOR m_color;
+	DIRECTION m_direction;
 };
