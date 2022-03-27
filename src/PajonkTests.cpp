@@ -36,8 +36,8 @@ TEST_F(boardTest, whenBoardHasSize2ReturnCorrectBoard)
 TEST_F(boardTest, whenInputtedMarkAt00ItIsStoredCorrectly)
 {
     Board sut{ 2 };
-    std::string field{ "..\n"
-                       "O.\n" };
+    std::string field{ "O.\n"
+                       "..\n" };
     sut.at(0, 0) = SYMBOL::HEAD;
     EXPECT_EQ(sut.getBoard(), field);
 }
@@ -50,31 +50,38 @@ TEST_F(boardTest, whenRequestedTurnsTailIntoBodyIn1By1Board)
     EXPECT_EQ(sut.at(0, 0).m_symbol, SYMBOL::BODY);
 }
 
+TEST_F(boardTest, whenConstructorWithFieldStateInStringIsCalledCorrectBoardIsCreated)
+{
+    std::string field{ ".....\n"
+                       ".XX..\n"
+                       "X....\n"
+                       "X....\n"
+                       ".XX..\n" };
+    Board sut(field);
+    EXPECT_EQ(sut.getBoard(), field);
+}
+
 TEST_F(boardTest, whenRequestedTurnsTailIntoBody)
 {
-    Board sut{ 3 };
-    sut.at(0, 0).m_symbol = SYMBOL::TAIL;
-    sut.at(1, 0).m_symbol = SYMBOL::TAIL;
-    sut.at(2, 0).m_symbol = SYMBOL::TAIL;
-    sut.at(2, 1).m_symbol = SYMBOL::TAIL;
+    std::string field1{ "...\n"
+                        "..o\n"
+                        "ooo\n" };
+    Board sut{ field1 };
+
     sut.makePermanent();
-    std::string field{ "...\n"
-                       "..X\n"
-                       "XXX\n" };
-    EXPECT_EQ(sut.getBoard(), field);
+    std::string field2{ "...\n"
+                        "..X\n"
+                        "XXX\n" };
+    EXPECT_EQ(sut.getBoard(), field2);
 }
 
 TEST_F(boardTest, whenFillIsCalledItFillsEmptyTileSurroundedByBody)
 {
-    Board sut{ 3 };
-    sut.at(0, 0) = SYMBOL::BODY;
-    sut.at(0, 1) = SYMBOL::BODY;
-    sut.at(0, 2) = SYMBOL::BODY;
-    sut.at(1, 0) = SYMBOL::BODY;
-    sut.at(1, 2) = SYMBOL::BODY;
-    sut.at(2, 0) = SYMBOL::BODY;
-    sut.at(2, 1) = SYMBOL::BODY;
-    sut.at(2, 2) = SYMBOL::BODY;
+    std::string field1{ "XXX\n"
+                        "X.X\n"
+                        "XXX\n" };
+    Board sut{ field1 };
+    
     sut.fill(1, 1);
     std::string field{ "XXX\n"
                        "XXX\n"
@@ -236,17 +243,6 @@ TEST_F(boardTest, whenUsingFillItMakesTailPermamentAndFillsAllSurroundedBlocks)
                         "XXXXX\n"
                         ".XXX.\n" };
     EXPECT_EQ(sut.getBoard(), field2);
-}
-
-TEST_F(boardTest, whenConstructorWithFieldStateInStringIsCalledCorrectBoardIsCreated)
-{
-    std::string field{ ".....\n"
-                       ".XX..\n"
-                       "X....\n"
-                       "X....\n"
-                       ".XX..\n" };
-    Board sut(field);
-    EXPECT_EQ(sut.getBoard(), field);
 }
 
 TEST_F(boardTest, whenBorderIsInNotMatchingColorsItWillNotBeFilled)

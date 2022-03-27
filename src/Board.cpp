@@ -2,40 +2,40 @@
 #include <iostream>
 
 Board::Board(int size)
-    : m_board(size, std::vector(size, Tile()))
+    :  m_size{size}, m_board(size * size, Tile())
     {}
 
-Board::Board(std::string boardState)
+Board::Board(std::string boardState) : m_board {}
 {
-    std::vector<Tile> temp;
-    for(auto& c : boardState)
+    for(size_t i = 1; i < boardState.length(); ++i)
     {
-        if(c == '.') temp.push_back(SYMBOL::EMPTY);
-        else if(c == 'X') temp.push_back(SYMBOL::BODY);
-        else if(c == 'o') temp.push_back(SYMBOL::TAIL);
-        else if(c == 'O') temp.push_back(SYMBOL::HEAD);
-        if(c == '\n')
+        if(boardState.at(i) == '\n')
         {
-            m_board.push_back(temp);
-            temp.clear();
+            m_size = i;
+            break;
         }
     }
-    rotateBoard();
+    m_board.reserve(boardState.length());
+    for(auto& c : boardState)
+    {
+        if(c == '.') m_board.push_back(SYMBOL::EMPTY);
+        if(c == 'X') m_board.push_back(SYMBOL::BODY);
+        if(c == 'o') m_board.push_back(SYMBOL::TAIL);
+        if(c == 'O') m_board.push_back(SYMBOL::HEAD);
+    }
 }
 
 Tile& Board::at(int x, int y)
 {
-    return m_board.at(x).at(y);
+    return m_board.at(x + y * size());
 }
 
 void Board::makePermanent(COLOR color)
 {
-    for (auto& vec : m_board)
+    for (auto& tile : m_board)
     {
-        for (auto& tile : vec)
-        {
-            if (tile.m_symbol == SYMBOL::TAIL && tile.m_color == color) tile.m_symbol = SYMBOL::BODY;
-        }
+        if (tile.m_symbol == SYMBOL::TAIL && tile.m_color == color) 
+            tile.m_symbol = SYMBOL::BODY;
     }
 }
 
@@ -43,9 +43,11 @@ std::string Board::getBoard()
 {
     std::string board{};
 
-    for (int i{ size() - 1 }; i >= 0; --i)
+    for (size_t i = 0; i < m_board.size(); ++i)
     {
-        board += getRow(i) + '\n';
+        board += static_cast<char>(m_board.at(i).m_symbol);
+        if ((i + 1) % (size()) == 0) 
+            board += '\n';
     }
 
     return board;
@@ -53,59 +55,56 @@ std::string Board::getBoard()
 
 void Board::printBoard()
 {
-    for (int i{ size() - 1 }; i >= 0; --i)
+    for (size_t i = 0; i < m_board.size(); ++i)
     {
-        for (int j = 0; j < size(); ++j)
+        switch (m_board.at(i).m_color)
         {
-            switch (at(j, i).m_color)
-            {
-            case COLOR::RED:
-                std::cout << "\033[1;31m";
-                break;
-            case COLOR::GREEN:
-                std::cout << "\033[1;32m";        
-                break;
-            case COLOR::YELLOW:
-                std::cout << "\033[1;33m";        
-                break;
-            case COLOR::BLUE:
-                std::cout << "\033[1;34m";        
-                break;
-            default:
-                std::cout << "\033[1;37m";  
-                break;
-            }
-            std::cout << static_cast<char>(at(j, i).m_symbol)
-                      << "\033[0m";
+        case COLOR::RED:
+            std::cout << "\033[1;31m";
+            break;
+        case COLOR::GREEN:
+            std::cout << "\033[1;32m";        
+            break;
+        case COLOR::YELLOW:
+            std::cout << "\033[1;33m";        
+            break;
+        case COLOR::BLUE:
+            std::cout << "\033[1;34m";        
+            break;
+        default:
+            std::cout << "\033[1;37m";  
+            break;
         }
-        std::cout << std::endl;
+        std::cout << static_cast<char>(m_board.at(i).m_symbol)
+                  << "\033[0m";
+        if ((i + 1) % (size()) == 0) std::cout << std::endl;
     }
 }
 
 void Board::fill(COLOR color)
 {
-    makePermanent(color); // correct this!
-    std::vector<std::vector<Tile>> boardC = m_board;
-    for(int y = 0; y < size(); ++y)
+    makePermanent(color);
+    std::vector<Tile> boardC = m_board;
+    for(int x = 0; x < size(); ++x)
     {
-        for(int x = 0; x < size(); ++x)
+        for(int y = 0; y < size(); ++y)
         {
-            if(boardC.at(x).at(y).m_symbol == SYMBOL::EMPTY) //optimization thing
+            if(boardC.at(x + y * size()).m_symbol == SYMBOL::EMPTY)
                 if(isSurrounded(x, y, boardC, color)) 
                     fill(x, y, color);
         }
     }
 }
 
-bool Board::isSurrounded(int x, int y, std::vector<std::vector<Tile>>& boardC, COLOR color)
+bool Board::isSurrounded(int x, int y, std::vector<Tile>& boardC, COLOR color)
 {
     if (not inRange(x, y)) return false;
-    if (boardC.at(x).at(y).m_symbol == SYMBOL::CHECKED) return true;
+    if (boardC.at(x + y * size()).m_symbol == SYMBOL::CHECKED) return true;
 
-    if (boardC.at(x).at(y).m_symbol == SYMBOL::BODY 
-    && boardC.at(x).at(y).m_color == color) return true;
+    if (boardC.at(x + y * size()).m_symbol == SYMBOL::BODY 
+    && boardC.at(x + y * size()).m_color == color) return true;
 
-    boardC.at(x).at(y).m_symbol = SYMBOL::CHECKED;
+    boardC.at(x + y * size()).m_symbol = SYMBOL::CHECKED;
     bool left = isSurrounded(x - 1, y, boardC, color);
     bool right = isSurrounded(x + 1, y, boardC, color);
     bool down = isSurrounded(x, y - 1, boardC, color);
@@ -127,28 +126,28 @@ void Board::fill(int x, int y, COLOR color)
     fill(x, y + 1, color);
 }
 
-void Board::fill(int x, int y)
-{
-    if (at(x, y).m_symbol != SYMBOL::BODY)
-    {
-        at(x, y).m_symbol = SYMBOL::BODY;
-        fill(x - 1, y);
-        fill(x + 1, y);
-        fill(x, y - 1);
-        fill(x, y + 1);
-    }
-}
+// void Board::fill(int x, int y)
+// {
+//     if (at(x, y).m_symbol != SYMBOL::BODY)
+//     {
+//         at(x, y).m_symbol = SYMBOL::BODY;
+//         fill(x - 1, y);
+//         fill(x + 1, y);
+//         fill(x, y - 1);
+//         fill(x, y + 1);
+//     }
+// }
 
 bool Board::isSurrounded(int x, int y)
 {
-    std::vector<std::vector<Tile>> board = m_board;
+    std::vector<Tile> board = m_board;
 
     return isSurrounded(x, y, board);
 }
 
 int Board::size()
 {
-    return m_board.size();
+    return m_size;
 }
 
 bool Board::inRange(int x, int y)
@@ -163,19 +162,4 @@ std::string Board::getRow(int rowNumber)
         row += static_cast<char>(at(i, rowNumber).m_symbol);
     }
     return row;
-}
-
-void Board::rotateBoard()
-{
-    for (int y = 0; y < size() / 2; ++y) 
-    { 
-        for (int x = y; x < size() - y - 1; ++x) 
-        { 
-            Tile temp = at(y, x); 
-            at(y, x) = at(size() - 1 - x, y); 
-            at(size() - 1 - x, y) = at(size() - 1 - y, size() - 1 - x); 
-            at(size() - 1 - y, size() - 1 - x) = at(x, size() - 1 - y); 
-            at(x, size() - 1 - y) = temp; 
-        } 
-    }
 }

@@ -41,15 +41,15 @@ public:
     std::string getBoard();
     void printBoard();
     void fill(COLOR = COLOR::WHITE);
-    void fill(int, int);
-    void fill(int, int, COLOR);
+    // void fill(int, int);
+    void fill(int, int, COLOR = COLOR::WHITE);
     bool isSurrounded(int, int);
     int size();
 private:
-    bool isSurrounded(int, int, std::vector<std::vector<Tile>>&, COLOR = COLOR::WHITE);
+    bool isSurrounded(int, int, std::vector<Tile>&, COLOR = COLOR::WHITE);
     bool inRange(int, int);
 	std::string getRow(int rowNumber);
-    void rotateBoard();
 private:
-    std::vector<std::vector<Tile>> m_board{ };
+    int m_size {};
+    std::vector<Tile> m_board {};
 };
