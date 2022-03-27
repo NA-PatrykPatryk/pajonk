@@ -13,8 +13,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(googletest)
 
-add_executable(main project/src/Main.cpp project/src/Board.cpp)
-add_executable(sample_test project/src/PajonkTests.cpp project/src/Board.cpp project/src/Player.cpp)
+add_executable(main project/src/Main.cpp project/src/Board.cpp project/src/Player.cpp project/src/Game.cpp)
+add_executable(sample_test project/src/PajonkTests.cpp project/src/Board.cpp project/src/Player.cpp project/src/Game.cpp)
 
 target_include_directories(main PUBLIC include)
 

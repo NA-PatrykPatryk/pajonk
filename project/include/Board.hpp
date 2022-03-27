@@ -17,7 +17,7 @@ struct Tile
 class Board
 {
 public:
-    Board(int = 10);
+    Board(int = 12);
     Board(std::string);
 public:
     Tile& at(int, int);

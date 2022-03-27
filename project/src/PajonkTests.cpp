@@ -14,9 +14,9 @@ struct boardTest :public ::testing::Test
 };
 
 
-TEST_F(boardTest, whenBoardIsInitializedItsSizeShouldBe10) 
+TEST_F(boardTest, whenBoardIsInitializedItsSizeShouldBe12) 
 {
-    EXPECT_EQ(boardSut.size(), 10);
+    EXPECT_EQ(boardSut.size(), 12);
 }
 
 TEST_F(boardTest, whenBoardIsInitializedWith5ItsSizeShouldBe5) 

@@ -15,9 +15,9 @@ class Player
 {
 public:
 	Player(Position = {0, 0}, COLOR = COLOR::WHITE, DIRECTION = DIRECTION::UP);
-	Position getPosition();
-	Position getPrevPosition();
-	COLOR getColor();
+	Position getPosition() const;
+	Position getPrevPosition() const;
+	COLOR getColor() const;
 	void setDirection(DIRECTION);
 	void move();
 

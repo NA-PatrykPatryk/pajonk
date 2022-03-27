@@ -10,17 +10,17 @@ Player::Player(Position startPosition, COLOR color, DIRECTION direction)
     : m_position(startPosition), m_color(color), m_direction(direction)
     {}
 
-Position Player::getPosition()
+Position Player::getPosition() const
 {
     return m_position;
 }
 
-Position Player::getPrevPosition()
+Position Player::getPrevPosition() const
 {
     return m_prevPosition;
 }
 
-COLOR Player::getColor()
+COLOR Player::getColor() const
 {
     return m_color;
 }
