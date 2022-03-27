@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "../include/Directions.hpp"
+#include "../include/Colors.hpp"
 
 struct Position
 {

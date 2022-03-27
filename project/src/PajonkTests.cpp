@@ -14,9 +14,9 @@ struct boardTest :public ::testing::Test
 };
 
 
-TEST_F(boardTest, whenBoardIsInitializedItsSizeShouldBe20) 
+TEST_F(boardTest, whenBoardIsInitializedItsSizeShouldBe10) 
 {
-    EXPECT_EQ(boardSut.size(), 20);
+    EXPECT_EQ(boardSut.size(), 10);
 }
 
 TEST_F(boardTest, whenBoardIsInitializedWith5ItsSizeShouldBe5) 
@@ -41,8 +41,8 @@ TEST_F(boardTest, whenBoardHasSize2ReturnCorrectBoard)
 TEST_F(boardTest, whenInputtedMarkAt00ItIsStoredCorrectly)
 {
     Board sut{ 2 };
-    std::string field{ "O.\n"
-                       "..\n" };
+    std::string field{ "..\n"
+                       "O.\n" };
     sut.at(0, 0) = SYMBOL::HEAD;
     EXPECT_EQ(sut.getBoard(), field);
 }
@@ -158,7 +158,7 @@ TEST_F(boardTest, whenBorderIsInNotMatchingColorsItWillNotBeFilled)
                        ".XXX.\n" };
     Board sut(field);
 
-    sut.at(1, 1) = {SYMBOL::BODY, COLOR::RED};
+    sut.at(0, 1) = {SYMBOL::BODY, COLOR::RED};
 
     sut.fill(COLOR::WHITE);
     EXPECT_EQ(sut.getBoard(), field);
@@ -238,6 +238,13 @@ TEST(playerTest, whenPlayerMovesItRemembersItsPreviousPosition)
     sut.move();
 	EXPECT_EQ(sut.getPrevPosition(), startPosition);
 }
+
+/*
+ * Tests for Player end here
+ * Tests for Game start here
+ */
+
+
 
 /////////
 

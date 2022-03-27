@@ -27,7 +27,7 @@ Board::Board(std::string boardState) : m_board {}
 
 Tile& Board::at(int x, int y)
 {
-    return m_board.at(x + y * size());
+    return m_board.at(x + reverse(y) * size());
 }
 
 void Board::printBoard()
@@ -80,7 +80,7 @@ void Board::fill(COLOR color)
     {
         for(int y = 0; y < size(); ++y)
         {
-            if(boardC.at(x + y * size()).m_symbol == SYMBOL::EMPTY)
+            if(boardC.at(x + reverse(y) * size()).m_symbol == SYMBOL::EMPTY)
                 if(isSurrounded(x, y, boardC, color)) 
                     fill(x, y, color);
         }
@@ -116,12 +116,12 @@ void Board::makePermanent(COLOR color)
 bool Board::isSurrounded(int x, int y, std::vector<Tile>& boardC, COLOR color)
 {
     if (not inRange(x, y)) return false;
-    if (boardC.at(x + y * size()).m_symbol == SYMBOL::CHECKED) return true;
+    if (boardC.at(x + reverse(y) * size()).m_symbol == SYMBOL::CHECKED) return true;
 
-    if (boardC.at(x + y * size()).m_symbol == SYMBOL::BODY 
-    && boardC.at(x + y * size()).m_color == color) return true;
+    if (boardC.at(x + reverse(y) * size()).m_symbol == SYMBOL::BODY 
+    && boardC.at(x + reverse(y) * size()).m_color == color) return true;
 
-    boardC.at(x + y * size()).m_symbol = SYMBOL::CHECKED;
+    boardC.at(x + reverse(y) * size()).m_symbol = SYMBOL::CHECKED;
     bool left = isSurrounded(x - 1, y, boardC, color);
     bool right = isSurrounded(x + 1, y, boardC, color);
     bool down = isSurrounded(x, y - 1, boardC, color);
@@ -134,4 +134,9 @@ bool Board::isSurrounded(int x, int y, std::vector<Tile>& boardC, COLOR color)
 bool Board::inRange(int x, int y)
 {
     return x >= 0 and x < size() and y >= 0 and y < size();
+}
+
+int Board::reverse(int y)
+{
+    return (size() - 1 - y);
 }

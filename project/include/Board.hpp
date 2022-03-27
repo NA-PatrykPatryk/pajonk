@@ -17,7 +17,7 @@ struct Tile
 class Board
 {
 public:
-    Board(int = 20);
+    Board(int = 10);
     Board(std::string);
 public:
     Tile& at(int, int);
@@ -30,6 +30,7 @@ private:
     void makePermanent(COLOR = COLOR::WHITE);
     bool isSurrounded(int, int, std::vector<Tile>&, COLOR = COLOR::WHITE);
     bool inRange(int, int);
+    int reverse(int);
 private:
     int m_size {};
     std::vector<Tile> m_board {};
